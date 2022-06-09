@@ -6,16 +6,20 @@
     "dev": "vite --port 5000 --host 0.0.0.0",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "lint": "eslint src/**/*.ts --fix && prettier ./src --write"
+    "lint": "eslint src/**/*.ts --fix && prettier ./src --write",
+    "test": "jest"
   },
   "devDependencies": {
+    "@types/jest": "^28.1.1",
     "eslint": "^8.17.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-config-standard": "^17.0.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-n": "^15.2.1",
     "eslint-plugin-promise": "^6.0.0",
+    "jest": "^28.1.1",
     "prettier": "^2.6.2",
+    "ts-jest": "^28.0.4",
     "typescript": "^4.7.3",
     "vite": "^2.9.9"
   },
