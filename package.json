@@ -7,7 +7,7 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "lint": "eslint src/**/*.ts --fix && prettier ./src --write",
-    "test": "jest"
+    "test": "jest --silent=false"
   },
   "devDependencies": {
     "@types/jest": "^28.1.1",
