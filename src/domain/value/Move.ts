@@ -3,18 +3,10 @@ import { PiecePosition } from "./Piece";
 
 export class Move {
   constructor(
-    private readonly player_type: PlayerType,
-    private readonly from: PiecePosition,
-    private readonly to: PiecePosition,
-    private readonly promotion: boolean,
+    public readonly player_type: PlayerType,
+    public readonly from: PiecePosition,
+    public readonly to: PiecePosition,
+    public readonly promotion: boolean,
   ) {}
 
-  get value(): object {
-    return {
-      player_type: this.player_type,
-      from: this.from,
-      to: this.to,
-      promotion: this.promotion,
-    };
-  }
 }

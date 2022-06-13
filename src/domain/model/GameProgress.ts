@@ -31,4 +31,10 @@ export class GameProgress {
     this.kifu = new Kifu(initial_diagram);
     // put pieces
   }
+
+  get() {
+    return [
+      this.kifu, this.turn, this.players
+    ];
+  }
 }

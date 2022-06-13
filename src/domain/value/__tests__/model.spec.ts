@@ -2,6 +2,8 @@ import { Turn } from "../Turn";
 import { Player } from "../Player";
 // import { PieceMoveArea, PieceDestination } from "../PieceMoveArea";
 import { Piece } from "../Piece";
+import { PieceMove } from "../../model/PieceMove";
+import { SquarePosition } from "../SquarePosition";
 
 test("Turn class, advanceTurn", () => {
   // Sente
@@ -42,4 +44,11 @@ test("Piece type, promotable test", () => {
     return p;
   }
   expect(test2).toThrow();
+})
+
+test("get PieceMove test,", () => {
+  let pieceMove = new PieceMove("King", (new SquarePosition(1,1)));
+  console.log(pieceMove.getCanMoveArea());
+  pieceMove = new PieceMove("King", (new SquarePosition(9,9)));
+  console.log(pieceMove.getCanMoveArea());
 })

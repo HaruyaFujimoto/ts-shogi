@@ -17,7 +17,25 @@ export const PieceTypes = [
   "Pawn",
 ] as const;
 
-type PieceType = typeof PieceTypes[number]
+export type PieceType = typeof PieceTypes[number]
+
+const OneSquarePieceTypes = [
+  "King",
+  "Gold",
+  "Silver",
+  "Pawn",
+] as const;
+export type OneSquarePiecetype = typeof OneSquarePieceTypes[number];
+
+const LongRangePieceTypes = [
+  "Rook",
+  "Bishop",
+  "Lance",
+] as const ;
+
+export type LongRangePieceType = typeof LongRangePieceTypes[number];
+
+export type kNightPieceType = "kNight";
 
 const NotPromotablePieceTypes:PieceType[] = [
   "King",

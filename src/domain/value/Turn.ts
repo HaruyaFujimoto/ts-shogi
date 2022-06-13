@@ -1,13 +1,13 @@
 import { Player, PlayerType } from "./Player";
 
 export class Turn {
-  private _value: PlayerType;
-  constructor(private initial_value: PlayerType) {
-    this._value = this.initial_value;
+  private current_turn: PlayerType;
+  constructor(private initial_turn: PlayerType) {
+    this.current_turn = this.initial_turn;
   }
 
   get value(): PlayerType {
-    return this._value;
+    return this.current_turn;
   }
 
   public advance() {
@@ -15,6 +15,6 @@ export class Turn {
       [Player.Sente]: Player.Gote,
       [Player.Gote]: Player.Sente,
     };
-    this._value = change_turn[this._value];
+    this.current_turn = change_turn[this.current_turn];
   }
 }
