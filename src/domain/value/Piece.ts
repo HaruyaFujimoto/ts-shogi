@@ -1,5 +1,6 @@
 import { SquarePosition } from "./SquarePosition";
 import { PieceInHand } from "./PieceInHand";
+import { PlayerType } from "./Player";
 
 // for player data
 export type PiecePosition = SquarePosition | PieceInHand;
@@ -18,6 +19,17 @@ export const PieceTypes = [
 ] as const;
 
 export type PieceType = typeof PieceTypes[number]
+
+const PieceInitialMap = {
+  "King": "K",
+  "Gold": "G",
+  "Rook": "R",
+  "Bishop": "B",
+  "Silver": "S",
+  "kNight": "N",
+  "Lance": "L",
+  "Pawn": "P",
+}
 
 const OneSquarePieceTypes = [
   "King",
@@ -57,10 +69,13 @@ const PromotableMap = Object.fromEntries(
 
 export class Piece {
   public readonly is_promotable: boolean;
+  public readonly type_initial: string;
   constructor(
     public readonly type: PieceType,
+    public master: PlayerType,
     public is_promoted: boolean = false,
   ) {
+    this.type_initial = PieceInitialMap[this.type];
     this.is_promotable = PromotableMap[this.type];
     // exception
     if (!this.is_promotable && this.is_promoted) {
