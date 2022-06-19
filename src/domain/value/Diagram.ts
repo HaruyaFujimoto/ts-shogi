@@ -13,25 +13,27 @@ export class Diagram {
   }
 
   public shogi_board: ShogiBoard;
-  public piece_in_hands: Map<PlayerType,PieceStand>;
+  public piece_in_hands: Map<PlayerType, PieceStand>;
 
   constructor(
     shogi_board?: ShogiBoard,
-    piece_in_hands?: Map<PlayerType,PieceStand>,
-  ){
-    const default_shogi_board: ShogiBoard = ShogiBoardGenerator.create_shogi_board();
+    piece_in_hands?: Map<PlayerType, PieceStand>
+  ) {
+    const default_shogi_board: ShogiBoard =
+      ShogiBoardGenerator.create_shogi_board();
     this.shogi_board = shogi_board ?? default_shogi_board;
     // const default_piece_stands = new Map();
     // PlayerTypes.map( (player_type) => {
     //   default_piece_stands.set(player_type,new PieceStand(player_type, []));
     // });
     const default_piece_stands = new Map(
-        PlayerTypes.map( (player_type) =>
-          [player_type, new PieceStand(player_type, [])]
-        )
+      PlayerTypes.map((player_type) => [
+        player_type,
+        new PieceStand(player_type, []),
+      ])
     );
-    PlayerTypes.map( (player_type) => {
-      default_piece_stands.set(player_type,new PieceStand(player_type, []));
+    PlayerTypes.map((player_type) => {
+      default_piece_stands.set(player_type, new PieceStand(player_type, []));
     });
     this.piece_in_hands = piece_in_hands ?? default_piece_stands;
   }
@@ -41,11 +43,11 @@ export class Diagram {
     // shogi_board
     for (let i of range(0, 10)) {
       const r = i;
-      for (let j of range(0,10)){
-        const f = 9 - j
+      for (let j of range(0, 10)) {
+        const f = 9 - j;
         if (r == 0) {
           if (f == 0) {
-            diagram_string += ' ';
+            diagram_string += " ";
             continue;
           }
           diagram_string += f;
@@ -55,16 +57,16 @@ export class Diagram {
           diagram_string += r;
           continue;
         }
-        diagram_string += this.shogi_board[f][r].piece?.type_initial || '-';
-      };
+        diagram_string += this.shogi_board[f][r].piece?.type_initial || "-";
+      }
       diagram_string += "\n";
-    };
+    }
     return diagram_string;
   }
 
-  private deploy_pieces_into_shogi_board(piecess: (Piece|null)[][]) {
-    piecess.map( (pieces: (Piece | null)[], i) => {
-      pieces.map( (piece: Piece | null, j) => {
+  private deploy_pieces_into_shogi_board(piecess: (Piece | null)[][]) {
+    piecess.map((pieces: (Piece | null)[], i) => {
+      pieces.map((piece: Piece | null, j) => {
         if (piece) {
           const f = i + 1;
           const r = j + 1;
@@ -73,5 +75,4 @@ export class Diagram {
       });
     });
   }
-
 }

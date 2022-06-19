@@ -20,9 +20,6 @@ export class GameProgress {
   }
 
   get value() {
-    return [
-      this.kifu, this.turn, this.players
-    ];
+    return [this.kifu, this.turn, this.players];
   }
-
 }

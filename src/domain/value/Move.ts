@@ -6,7 +6,6 @@ export class Move {
     public readonly player_type: PlayerType,
     public readonly from: PiecePosition,
     public readonly to: PiecePosition,
-    public readonly promotion: boolean,
+    public readonly promotion: boolean
   ) {}
-
 }
