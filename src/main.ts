@@ -1,22 +1,32 @@
-import Phaser from "phaser";
-import { MyScene } from "./scenes/MyScene";
+import * as PIXI from 'pixi.js'
 
-const config: Phaser.Types.Core.GameConfig = {
-  type: Phaser.AUTO,
-  width: 500,
-  height: 600,
-  physics: {
-    default: "arcade",
-    arcade: {
-      gravity: { y: 200 },
-    },
-  },
-  scene: MyScene,
-};
-new Phaser.Game(config);
+// init pixi
+const canvas_props = {
+  width: 600,
+  height: 600
+}
+let app = new PIXI.Application({...canvas_props});
+document.body.appendChild(app.view);
 
-import { GameProgress } from "./domain/model/GameProgress";
+// shogi board
+let shogi_board = PIXI.Sprite.from('assets/syougiban_b.png');
+shogi_board.width = 600;
+shogi_board.height = 600;
+app.stage.addChild(shogi_board);
+shogi_board.interactive = true;
+shogi_board.on("click",(e) => console.log(e.data.originalEvent));
+shogi_board.on("click",(e) => console.log([e.data.originalEvent.offsetX, e.data.originalEvent.offsetY]));
 
-const game = new GameProgress();
-const st = game.diagram_to_string();
-console.log(st);
+// king
+let king = PIXI.Sprite.from('assets/syougi_koma01_a_15.png');
+let ratio = 60 / 64;
+// king.anchor.x = 0.5;
+// king.anchor.y = 1.0;
+king.width = 42 * ratio;
+king.height = 49 * ratio;
+console.dir(king._texture.orig)
+king.x = 299 * ratio;
+king.y = 64 * ratio;
+app.stage.addChild(king);
+king.interactive = true;
+king.on("click", (e) => console.dir(e));

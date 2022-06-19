@@ -1,23 +1,14 @@
-// export type File = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
-
-// export type Rank = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
+import { range } from "../service/utils";
 
 export class SquarePosition {
   constructor(
     public readonly file: number,
     public readonly rank: number,
-    ) {
-      const numbers = [1,2,3,4,5,6,7,8,9];
-      if (!numbers.includes(file)) {
-        throw new Error(`Invalid File number: ${file}`);
-      }
-      if (!numbers.includes(rank)) {
-        throw new Error(`Invalid Rank number: ${rank}`);
-      }
-    }
-  static checkNumbers(file: number, rank: number): boolean {
-    const numbers = [1,2,3,4,5,6,7,8,9];
-    if (!numbers.includes(file) || !numbers.includes(rank)) {
+  ) {}
+
+  get is_in_shogi_board(): boolean {
+    const numbers: number[] = range(1,9);
+    if (!numbers.includes(this.file) || !numbers.includes(this.rank)) {
       return false;
     }
     return true;
