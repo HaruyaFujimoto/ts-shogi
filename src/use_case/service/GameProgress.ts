@@ -1,7 +1,7 @@
-import { Diagram } from "../value/Diagram";
-import { Player } from "../value/Player";
-import { Turn } from "../value/Turn";
-import { Kifu } from "./Kifu";
+import { Diagram } from "../../domain/value/Diagram";
+import { Player } from "../../domain/value/Player";
+import { Turn } from "../../domain/value/Turn";
+import { Kifu } from "../../domain/model/Kifu";
 // import { Rule } from "./Rule";
 
 export class GameProgress {

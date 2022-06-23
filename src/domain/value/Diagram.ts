@@ -1,19 +1,11 @@
 import { ShogiBoard, ShogiBoardGenerator } from "./ShogiBoard";
-import { Piece } from "./Piece";
 import { PieceStand } from "./PieceStand";
 import { PlayerType, PlayerTypes } from "./Player";
-import { Rule } from "../model/Rule";
 import { range } from "../service/utils";
 
 export class Diagram {
-  static default_diagram() {
-    const diagram = new Diagram();
-    diagram.deploy_pieces_into_shogi_board(Rule.InitialPiecePosition);
-    return diagram;
-  }
-
-  public shogi_board: ShogiBoard;
-  public piece_in_hands: Map<PlayerType, PieceStand>;
+  private _shogi_board: ShogiBoard;
+  private _piece_in_hands: Map<PlayerType, PieceStand>;
 
   constructor(
     shogi_board?: ShogiBoard,
@@ -21,11 +13,7 @@ export class Diagram {
   ) {
     const default_shogi_board: ShogiBoard =
       ShogiBoardGenerator.create_shogi_board();
-    this.shogi_board = shogi_board ?? default_shogi_board;
-    // const default_piece_stands = new Map();
-    // PlayerTypes.map( (player_type) => {
-    //   default_piece_stands.set(player_type,new PieceStand(player_type, []));
-    // });
+    this._shogi_board = shogi_board ?? default_shogi_board;
     const default_piece_stands = new Map(
       PlayerTypes.map((player_type) => [
         player_type,
@@ -35,7 +23,15 @@ export class Diagram {
     PlayerTypes.map((player_type) => {
       default_piece_stands.set(player_type, new PieceStand(player_type, []));
     });
-    this.piece_in_hands = piece_in_hands ?? default_piece_stands;
+    this._piece_in_hands = piece_in_hands ?? default_piece_stands;
+  }
+
+  get shogi_board(): ShogiBoard {
+    return this._shogi_board;
+  }
+
+  get piece_in_hands(): Map<PlayerType, PieceStand> {
+    return this._piece_in_hands;
   }
 
   public diagram_to_string() {
@@ -64,15 +60,4 @@ export class Diagram {
     return diagram_string;
   }
 
-  private deploy_pieces_into_shogi_board(piecess: (Piece | null)[][]) {
-    piecess.map((pieces: (Piece | null)[], i) => {
-      pieces.map((piece: Piece | null, j) => {
-        if (piece) {
-          const f = i + 1;
-          const r = j + 1;
-          this.shogi_board[f][r].piece = piece;
-        }
-      });
-    });
-  }
 }
