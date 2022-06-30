@@ -1,4 +1,4 @@
-import { Diagram } from "../../domain/value/Diagram";
+import { Diagram } from "../../domain/model/Diagram";
 import { Kifu } from "../../domain/model/Kifu";
 import { DiagramFactory } from "../../domain/service/DiagramFactory";
 import { Move } from "../../domain/value/Move";

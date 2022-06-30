@@ -1,4 +1,4 @@
-import { Diagram } from "../value/Diagram";
+import { Diagram } from "../model/Diagram";
 import { Move } from "../value/Move";
 import { PieceInHand } from "../value/PieceInHand";
 import { FileRank, Square } from "../value/Square";

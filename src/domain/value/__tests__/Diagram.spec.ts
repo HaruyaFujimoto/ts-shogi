@@ -1,4 +1,4 @@
-import { Diagram } from "../Diagram";
+import { Diagram } from "../../model/Diagram";
 import { DiagramFactory } from "../../service/DiagramFactory";
 
 test("Diagram create test", () => {

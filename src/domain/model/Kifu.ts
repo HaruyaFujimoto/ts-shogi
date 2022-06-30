@@ -1,4 +1,4 @@
-import { Diagram } from "../value/Diagram";
+import { Diagram } from "./Diagram";
 import { Move } from "../value/Move";
 
 export class Kifu {

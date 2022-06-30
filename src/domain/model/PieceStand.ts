@@ -1,5 +1,5 @@
-import { PlayerType } from "./Player";
-import { Piece, PieceType, PieceTypes } from "./Piece";
+import { PlayerType } from "../value/Player";
+import { Piece, PieceType, PieceTypes } from "../value/Piece";
 
 export type PieceStands = Map<PlayerType, PieceStand>;
 

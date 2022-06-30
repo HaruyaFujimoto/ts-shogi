@@ -1,5 +1,5 @@
 import * as PIXI from "pixi.js";
-import { Diagram } from "../../domain/value/Diagram";
+import { Diagram } from "../../domain/model/Diagram";
 import { PieceStandDrawer } from "./PieceStandDrawer";
 import { ShogiBoardDrawer } from "./ShogiBoardDrawer";
 

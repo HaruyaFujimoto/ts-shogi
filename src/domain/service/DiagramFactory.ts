@@ -1,4 +1,4 @@
-import { Diagram } from "../value/Diagram";
+import { Diagram } from "../model/Diagram";
 import { Piece } from "../value/Piece";
 import { Rule } from "../model/Rule";
 import { ShogiBoard } from "../value/ShogiBoard";

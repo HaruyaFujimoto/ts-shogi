@@ -1,12 +1,12 @@
-import { ShogiBoard } from "./ShogiBoard";
+import { ShogiBoard } from "../value/ShogiBoard";
 import { PieceStand, PieceStands } from "./PieceStand";
 import { range } from "../service/utils";
-import { Move } from "./Move";
-import { Piece, PiecePosition } from "./Piece";
-import { Player, PlayerType } from "./Player";
-import { PieceInHand } from "./PieceInHand";
-import { Turn } from "./Turn";
-import { Square, FileRank } from "./Square";
+import { Move } from "../value/Move";
+import { Piece, PiecePosition } from "../value/Piece";
+import { Player, PlayerType } from "../value/Player";
+import { PieceInHand } from "../value/PieceInHand";
+import { Turn } from "../value/Turn";
+import { Square, FileRank } from "../value/Square";
 
 export class Diagram {
   private _piece_in_hands: PieceStands = new Map([
