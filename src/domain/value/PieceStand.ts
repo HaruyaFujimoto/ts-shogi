@@ -1,6 +1,34 @@
 import { PlayerType } from "./Player";
-import { Piece } from "./Piece";
+import { Piece, PieceType, PieceTypes } from "./Piece";
 
 export class PieceStand {
-  constructor(public readonly master: PlayerType, public pieces: Piece[]) {}
+  private _pieces: {[key:string]: number} = {};
+  constructor(
+    public readonly master: PlayerType,
+    pieces: Piece[] = []
+  ) {
+    PieceTypes.map( (piece_type: PieceType) => {
+      this._pieces[piece_type] = 0;
+    });
+    pieces.map( (piece: Piece) => {
+      this._pieces[piece.type] += 1;
+    });
+  }
+
+  get pieces(): {[key:string]: number} {
+    return this._pieces;
+  }
+
+  public get_piece(piece: Piece) {
+    this._pieces[piece.type] += 1;
+  }
+
+  public release_piece(piece: Piece) {
+    if (this._pieces[piece.type] < 1) {
+      throw Error(`Piece stand has no ${piece.type}.`);
+    }
+    this._pieces[piece.type] -= 1;
+  }
 }
+
+export type PieceStands = Map<PlayerType,PieceStand>;

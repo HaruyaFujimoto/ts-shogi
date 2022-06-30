@@ -8,10 +8,10 @@ export class Turn {
   }
 
   public advance() {
-    const change_turn = {
+    const swap_turn = {
       [Player.Sente]: Player.Gote,
       [Player.Gote]: Player.Sente,
     };
-    this._current_turn = change_turn[this._current_turn];
+    this._current_turn = swap_turn[this._current_turn];
   }
 }

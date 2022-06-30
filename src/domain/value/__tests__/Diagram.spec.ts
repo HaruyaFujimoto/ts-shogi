@@ -1,7 +1,8 @@
 import { Diagram } from "../Diagram";
+import { DiagramFactory } from "../../service/DiagramFactory";
 
 test("Diagram create test", () => {
-  const diagram = Diagram.default_diagram();
+  const diagram: Diagram = new DiagramFactory().default_diagram();
   const expect_string =
     "987654321 \n" +
     "LNSGKGSNL1\n" +

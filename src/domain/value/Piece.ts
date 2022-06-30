@@ -1,9 +1,9 @@
-import { SquarePosition } from "./SquarePosition";
 import { PieceInHand } from "./PieceInHand";
-import { PlayerType } from "./Player";
+import { Player, PlayerType } from "./Player";
+import { Square } from "./Square";
 
 // for player data
-export type PiecePosition = SquarePosition | PieceInHand;
+export type PiecePosition = Square | PieceInHand;
 
 // define types
 export const PieceTypes = [
@@ -65,7 +65,7 @@ export class Piece {
   public readonly type_initial: string;
   constructor(
     public readonly type: PieceType,
-    public master: PlayerType,
+    private _master: PlayerType,
     public is_promoted: boolean = false
   ) {
     this.type_initial = Piece.PieceInitialMap[this.type];
@@ -76,5 +76,17 @@ export class Piece {
         `This piece type can not promotion. Piece type: "${this.type}"`
       );
     }
+  }
+
+  get master(): PlayerType {
+    return this._master;
+  }
+
+  public be_taken(): void {
+    const swap_player_type = {
+      [Player.Sente]: Player.Gote,
+      [Player.Gote]: Player.Sente
+    };
+    this._master = swap_player_type[this._master];
   }
 }

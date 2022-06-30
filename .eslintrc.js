@@ -5,12 +5,19 @@ module.exports = {
     node: true
   },
   extends: [
-    'standard',
+    // 'standard',
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
     'prettier'
   ],
+  plugins: [
+      "@typescript-eslint"
+  ],
+  parser: "@typescript-eslint/parser",
   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module'
+    ecmaVersion: "latest",
+    sourceType: 'module',
+    project: "./tsconfig.json"
   },
   rules: {
   }
