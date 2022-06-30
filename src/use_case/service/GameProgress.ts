@@ -16,9 +16,9 @@ export class GameProgress {
     this._diagram = new DiagramFactory().default_diagram();
     // create Players and Turn
     this._kifu = new Kifu(this._diagram);
-    this.add_move([7,7], [7,6]);
-    this.add_move([3,3], [3,4]);
-    this.add_move([8,8], [2,2]);
+    this.add_move([7, 7], [7, 6]);
+    this.add_move([3, 3], [3, 4]);
+    this.add_move([8, 8], [2, 2]);
     // const from: Square = this._diagram.shogi_board[7][7];
     // const to: Square = this._diagram.shogi_board[7][6];
     // const move = new Move(from, to, false);
@@ -35,14 +35,12 @@ export class GameProgress {
   }
 
   private add_move(from: FileRank, to: FileRank, promotion = false) {
-    const move: Move = new MoveFactory().create_move(this._diagram,
-      {
-      from:from,
-      to:to,
+    const move: Move = new MoveFactory().create_move(this._diagram, {
+      from: from,
+      to: to,
       promotion: promotion,
     });
     this._diagram.moved(move);
     this._kifu.add_move(move);
   }
-
 }

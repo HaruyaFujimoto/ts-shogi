@@ -10,14 +10,8 @@ import { Square, FileRank } from "./Square";
 
 export class Diagram {
   private _piece_in_hands: PieceStands = new Map([
-    [
-      Player.Sente,
-      new PieceStand(Player.Sente, [])
-    ],
-    [
-      Player.Gote,
-      new PieceStand(Player.Gote, [])
-    ],
+    [Player.Sente, new PieceStand(Player.Sente, [])],
+    [Player.Gote, new PieceStand(Player.Gote, [])],
   ]);
 
   constructor(
@@ -48,11 +42,12 @@ export class Diagram {
 
   public moved(move: Move) {
     if (move.piece.master != this.turn) {
-      throw Error(`Turn unmatched, current Turn is ${this.turn}, passed move's player is ${move.piece.master}`);
+      throw Error(
+        `Turn unmatched, current Turn is ${this.turn}, passed move's player is ${move.piece.master}`
+      );
     }
     if (move.from instanceof Square) {
       this._moved_from_square_position(move);
-
     }
     if (move.from instanceof PieceInHand) {
       this._moved_from_piece_in_hand(move);
@@ -63,7 +58,11 @@ export class Diagram {
   private _moved_from_square_position(move: Move) {
     const from: Square = <Square>move.from;
     const to: Square = move.to;
-    const target_position_piece = this._move_piece_into_square_position(from, to, move.piece);
+    const target_position_piece = this._move_piece_into_square_position(
+      from,
+      to,
+      move.piece
+    );
     // 移動先に駒が居たら場合
     if (target_position_piece) {
       // 駒が取られる (駒の所有者の変更)
@@ -80,7 +79,11 @@ export class Diagram {
     this._move_piece_into_square_position(from, to, move.piece);
   }
 
-  private _move_piece_into_square_position(from: PiecePosition, to: Square, piece: Piece): Piece | null {
+  private _move_piece_into_square_position(
+    from: PiecePosition,
+    to: Square,
+    piece: Piece
+  ): Piece | null {
     if (from instanceof Square) {
       from.piece = null;
     }

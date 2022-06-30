@@ -23,4 +23,4 @@ test("Piece be taken test, then change master", () => {
   expect(p.master).toBe(Player.Gote);
   p.be_taken();
   expect(p.master).toBe(Player.Sente);
-})
+});

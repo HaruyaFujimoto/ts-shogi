@@ -1,13 +1,12 @@
-import { DiagramFactory } from "../../service/DiagramFactory"
+import { DiagramFactory } from "../../service/DiagramFactory";
 import { MoveFactory } from "../../service/MoveFactory";
 import { Move } from "../Move";
 
 test("Move test", () => {
   const diagram = new DiagramFactory().default_diagram();
-  const move: Move = new MoveFactory().create_move(diagram,
-    {
-    from:[7,7],
-    to:[7,6],
+  const move: Move = new MoveFactory().create_move(diagram, {
+    from: [7, 7],
+    to: [7, 6],
     promotion: false,
   });
   diagram.moved(move);
@@ -23,4 +22,4 @@ test("Move test", () => {
     "-B-----R-8\n" +
     "LNSGKGSNL9\n";
   expect(diagram.diagram_to_string()).toEqual(expect_string);
-})
+});

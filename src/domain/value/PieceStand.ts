@@ -1,21 +1,20 @@
 import { PlayerType } from "./Player";
 import { Piece, PieceType, PieceTypes } from "./Piece";
 
+export type PieceStands = Map<PlayerType, PieceStand>;
+
 export class PieceStand {
-  private _pieces: {[key:string]: number} = {};
-  constructor(
-    public readonly master: PlayerType,
-    pieces: Piece[] = []
-  ) {
-    PieceTypes.map( (piece_type: PieceType) => {
+  private _pieces: { [key: string]: number } = {};
+  constructor(public readonly master: PlayerType, pieces: Piece[] = []) {
+    PieceTypes.map((piece_type: PieceType) => {
       this._pieces[piece_type] = 0;
     });
-    pieces.map( (piece: Piece) => {
+    pieces.map((piece: Piece) => {
       this._pieces[piece.type] += 1;
     });
   }
 
-  get pieces(): {[key:string]: number} {
+  get pieces(): { [key: string]: number } {
     return this._pieces;
   }
 
@@ -30,5 +29,3 @@ export class PieceStand {
     this._pieces[piece.type] -= 1;
   }
 }
-
-export type PieceStands = Map<PlayerType,PieceStand>;

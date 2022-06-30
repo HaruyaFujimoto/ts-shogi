@@ -2,7 +2,8 @@ import * as PIXI from "pixi.js";
 import { ShogiBoardDrawer } from "./ShogiBoardDrawer";
 
 export class PieceStandDrawer {
-  static readonly piece_stand_color: number = ShogiBoardDrawer.shogi_board_color;
+  static readonly piece_stand_color: number =
+    ShogiBoardDrawer.shogi_board_color;
 
   constructor(
     private app: PIXI.Application,

@@ -11,17 +11,17 @@ import { Turn } from "../value/Turn";
 export class DiagramFactory {
   public default_diagram() {
     const turn = new Turn(Player.Sente);
-    const shogi_board: ShogiBoard =
-      this.deploy_pieces_into_shogi_board(
-        Rule.InitialPiecePosition
-      );
+    const shogi_board: ShogiBoard = this.deploy_pieces_into_shogi_board(
+      Rule.InitialPiecePosition
+    );
     // const piece_stands = this.create_new_piece_stand();
     const diagram = new Diagram(turn, shogi_board);
     return diagram;
   }
 
   private deploy_pieces_into_shogi_board(piecess: (Piece | null)[][]) {
-    const shogi_board: ShogiBoard = new ShogiBoardFactory().create_shogi_board();
+    const shogi_board: ShogiBoard =
+      new ShogiBoardFactory().create_shogi_board();
     piecess.map((pieces: (Piece | null)[], i) => {
       pieces.map((piece: Piece | null, j) => {
         if (piece) {

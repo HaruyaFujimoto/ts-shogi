@@ -57,13 +57,27 @@ export class ShogiBoardDrawer {
         const y = origin_Y + this.square_size * j;
         const file = 9 - i;
         const rank = j + 1;
-        const container = this.create_pixi_container(x, y ,this.square_size, this.square_size);
+        const container = this.create_pixi_container(
+          x,
+          y,
+          this.square_size,
+          this.square_size
+        );
         if (!this._square_containers[file]) {
           this._square_containers[file] = {};
         }
         this._square_containers[file][rank] = container;
-        this.add_sprite_into_container(container, this.square_size, this.square_size, [file, rank]);
-        this.add_graphic_into_container(container, this.square_size, this.square_size);
+        this.add_sprite_into_container(
+          container,
+          this.square_size,
+          this.square_size,
+          [file, rank]
+        );
+        this.add_graphic_into_container(
+          container,
+          this.square_size,
+          this.square_size
+        );
       }
     }
   }
@@ -114,7 +128,8 @@ export class ShogiBoardDrawer {
   private add_graphic_into_container(
     container: PIXI.Container,
     width: number,
-    height: number) {
+    height: number
+  ) {
     const g = new PIXI.Graphics();
     g.lineStyle(ShogiBoardDrawer.line_width, 0, 0.85);
     g.beginFill(ShogiBoardDrawer.shogi_board_color);
@@ -124,14 +139,13 @@ export class ShogiBoardDrawer {
   }
 
   private draw_pieces() {
-    for (let file of range(1, 9)) {
-      for (let rank of range(1, 9)) {
+    for (const file of range(1, 9)) {
+      for (const rank of range(1, 9)) {
         const square = this.shogi_board[file][rank];
         if (square.piece) {
           const container = this._square_containers[file][rank];
           new PieceDrawer(container, square.piece);
         }
-
       }
     }
   }

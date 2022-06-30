@@ -85,7 +85,7 @@ export class Piece {
   public be_taken(): void {
     const swap_player_type = {
       [Player.Sente]: Player.Gote,
-      [Player.Gote]: Player.Sente
+      [Player.Gote]: Player.Sente,
     };
     this._master = swap_player_type[this._master];
   }
