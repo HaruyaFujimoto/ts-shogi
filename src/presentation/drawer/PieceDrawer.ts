@@ -14,19 +14,16 @@ export class PieceDrawer {
     Pawn: "assets/syougi_koma01_a_13.png",
   };
 
-  private sprite: PIXI.Sprite|null = null;
-  constructor(
-    private container: PIXI.Container,
-    private piece: Piece|null
-  ) {
+  private sprite: PIXI.Sprite | null = null;
+  constructor(private container: PIXI.Container, private piece: Piece | null) {
     if (piece) {
       this.put_piece(piece);
     }
   }
 
-  public update(piece: Piece|null) {
+  public update(piece: Piece | null) {
     // guard
-    if (! this.piece && ! piece) {
+    if (!this.piece && !piece) {
       return;
     }
     if (piece && this.piece?.equals(piece)) {

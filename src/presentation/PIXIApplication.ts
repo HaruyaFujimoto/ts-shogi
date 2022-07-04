@@ -11,7 +11,6 @@ const canvas_props = {
 export const app = new PIXI.Application({ ...canvas_props });
 document.body.appendChild(app.view);
 
-
 export function create_pixi_container(
   x: number,
   y: number,

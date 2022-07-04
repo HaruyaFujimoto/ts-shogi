@@ -7,4 +7,3 @@ export class Square {
     public piece: Piece | null
   ) {}
 }
-

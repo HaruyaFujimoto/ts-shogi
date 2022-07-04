@@ -23,7 +23,7 @@ export class PieceStandDrawer {
   ) {
     this.container = create_pixi_container(x, y, width, height);
     this.sprite = this.add_sprite(this.container, width, height);
-    this. graphic = this.add_graphic(this.container, width, height);
+    this.graphic = this.add_graphic(this.container, width, height);
   }
 
   private add_sprite(container: PIXI.Container, width: number, height: number) {
@@ -35,7 +35,11 @@ export class PieceStandDrawer {
     return sprite;
   }
 
-  private add_graphic(container: PIXI.Container, width: number, height: number) {
+  private add_graphic(
+    container: PIXI.Container,
+    width: number,
+    height: number
+  ) {
     const graphic = new PIXI.Graphics();
     container.addChild(graphic);
     graphic.beginFill(PieceStandDrawer.piece_stand_color);
@@ -49,17 +53,18 @@ export class PieceStandDrawer {
   }
 
   private draw_pieces(piece_stand: PieceStand, container: PIXI.Container) {
-    PieceTypes.map(
-      (piece_type: PieceType) => {
-        this.draw_piece(piece_type, piece_stand.pieces[piece_type], container);
-      }
-    )
+    PieceTypes.map((piece_type: PieceType) => {
+      this.draw_piece(piece_type, piece_stand.pieces[piece_type], container);
+    });
   }
 
-  private draw_piece(piece_type: PieceType, n: number, container: PIXI.Container) {
+  private draw_piece(
+    piece_type: PieceType,
+    n: number,
+    container: PIXI.Container
+  ) {
     if (n < 1) {
       return;
     }
-
   }
 }

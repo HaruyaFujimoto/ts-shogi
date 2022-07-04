@@ -5,13 +5,13 @@ import { ShogiBoardDrawer } from "./ShogiBoardDrawer";
 import { create_pixi_container } from "../PIXIApplication";
 
 export class SquareDrawer {
-  private static last_selected_instance: SquareDrawer|null = null;
+  private static last_selected_instance: SquareDrawer | null = null;
 
   private readonly square_color = {
     normal: ShogiBoardDrawer.shogi_board_color,
     selected: 0xff4b4b,
-    last_move_to: 0xff824b
-  }
+    last_move_to: 0xff824b,
+  };
   private readonly line_width = ShogiBoardDrawer.line_width;
 
   private container: PIXI.Container;
@@ -25,7 +25,7 @@ export class SquareDrawer {
     x: number,
     y: number,
     width: number,
-    height: number,
+    height: number
   ) {
     this.container = create_pixi_container(x, y, width, height);
     this.sprite = this.add_sprite_into_container(this.container, width, height);
@@ -43,7 +43,8 @@ export class SquareDrawer {
 
   private update_square_graphic() {
     const color = this.square_color[this.square_status];
-    this.graphic.lineStyle(this.line_width, 0, 0.85)
+    this.graphic
+      .lineStyle(this.line_width, 0, 0.85)
       .beginFill(color)
       .drawRect(0, 0, this.sprite.width, this.sprite.height)
       .endFill();
@@ -52,7 +53,7 @@ export class SquareDrawer {
   private add_sprite_into_container(
     container: PIXI.Container,
     width: number,
-    height: number,
+    height: number
   ) {
     const sprite = new PIXI.Sprite();
     container.addChild(sprite);
@@ -68,7 +69,7 @@ export class SquareDrawer {
   }
 
   private add_graphic_into_container(
-    container: PIXI.Container,
+    container: PIXI.Container
     // width: number,
     // height: number
   ): PIXI.Graphics {
@@ -84,10 +85,8 @@ export class SquareDrawer {
   private attatch_click_event(sprite: PIXI.Sprite) {
     sprite.on("click", () => {
       // console.log(this.sprite.position);
-      const skip_condition = (
-        !this.square.piece ||
-        this.square_status == "selected"
-      );
+      const skip_condition =
+        !this.square.piece || this.square_status == "selected";
       if (skip_condition) {
         return;
       }
@@ -99,8 +98,6 @@ export class SquareDrawer {
         last_selected.update_square_graphic();
       }
       SquareDrawer.last_selected_instance = this;
-
     });
   }
-
 }

@@ -26,10 +26,16 @@ export class DiagramDrawer {
     );
 
     const board_size = this._shogi_board_drawer.width;
-    this._piece_stand_drawers = this.generate_piece_stand_drawer(piece_stand_size, board_size);
+    this._piece_stand_drawers = this.generate_piece_stand_drawer(
+      piece_stand_size,
+      board_size
+    );
   }
 
-  private generate_piece_stand_drawer(piece_stand_size: { width: number; height: number }, board_size: number): PieceStandDrawers {
+  private generate_piece_stand_drawer(
+    piece_stand_size: { width: number; height: number },
+    board_size: number
+  ): PieceStandDrawers {
     const piece_stand_drawers = new Map();
     const sente_piece_stand = new PieceStandDrawer(
       this.diagram.piece_stands.get(Player.Sente) as PieceStand,
@@ -56,7 +62,8 @@ export class DiagramDrawer {
 
   public update() {
     this._shogi_board_drawer.update();
-    this._piece_stand_drawers.forEach(
-      (piece_stand_drawer) => piece_stand_drawer.update());
+    this._piece_stand_drawers.forEach((piece_stand_drawer) =>
+      piece_stand_drawer.update()
+    );
   }
 }

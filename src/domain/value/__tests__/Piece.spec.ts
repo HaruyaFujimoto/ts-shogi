@@ -29,4 +29,4 @@ test("Piece equals test", () => {
   const p1 = new Piece("Pawn", Player.Sente, false);
   const p2 = new Piece("Pawn", Player.Sente, false);
   expect(p1.equals(p2)).toBe(true);
-})
+});

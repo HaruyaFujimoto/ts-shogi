@@ -8,8 +8,7 @@ export class DiagramController {
   private _diagram: Diagram = GameController.instance.game.diagram;
   private _diagram_drawer: DiagramDrawer;
 
-  private constructor(
-  ) {
+  private constructor() {
     this._diagram_drawer = new DiagramDrawer(this._diagram);
   }
 
@@ -21,9 +20,7 @@ export class DiagramController {
     return this._instance;
   }
 
-  public add_move() {
-
-  }
+  public add_move() {}
 
   private update() {
     this._diagram_drawer.update();

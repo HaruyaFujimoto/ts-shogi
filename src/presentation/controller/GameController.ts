@@ -9,7 +9,7 @@ export class GameController {
     this._game = new GameProgress();
   }
 
-  static get instance(){
+  static get instance() {
     if (this._instance) {
       return this._instance;
     }
