@@ -37,12 +37,10 @@ export class ShogiBoardDrawer {
   }
 
   public update(): void {
-    for (const file of FileRank.numbers) {
-      for (const rank of FileRank.numbers) {
-        const square: Square = this.shogi_board[file][rank];
-        this._square_drawers[file][rank].update(square);
-      }
-    }
+    FileRank.map((file, rank) => {
+      const square: Square = this.shogi_board[file][rank];
+      this._square_drawers[file][rank].update(square);
+    });
   }
 
   private draw_background() {

@@ -2,9 +2,14 @@
 import { Piece } from "../value/Piece";
 // import { ShogiBoard } from "../value/ShogiBoard";
 
+/**
+ * This Type seems to be [0~8][0~8] as [file][rank]
+ */
+export type PiecesInShogiBoardAsArray = (Piece | null)[][];
+
 export class Rule {
   // [file][rank]: piece
-  static readonly InitialPiecePosition: (Piece | null)[][] = [
+  static readonly InitialPiecePosition: PiecesInShogiBoardAsArray = [
     [
       // file 1
       new Piece("Lance", "Gote"),

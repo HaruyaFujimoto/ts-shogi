@@ -1,6 +1,6 @@
 import { Diagram } from "../model/Diagram";
 import { Piece } from "../value/Piece";
-import { Rule } from "../model/Rule";
+import { PiecesInShogiBoardAsArray, Rule } from "../model/Rule";
 import { ShogiBoard } from "../value/ShogiBoard";
 import { ShogiBoardFactory } from "./ShogiBoardFactory";
 import { Player } from "../value/Player";
@@ -19,7 +19,7 @@ export class DiagramFactory {
     return diagram;
   }
 
-  private deploy_pieces_into_shogi_board(piecess: (Piece | null)[][]) {
+  private deploy_pieces_into_shogi_board(piecess: PiecesInShogiBoardAsArray) {
     const shogi_board: ShogiBoard =
       new ShogiBoardFactory().create_shogi_board();
     piecess.map((pieces: (Piece | null)[], i) => {
