@@ -1,5 +1,5 @@
-import * as PIXI from "pixi.js";
+import { SquareDrawer } from "../drawer/SquareDrawer";
 
 export interface UIShogiBoard {
-  [key: string]: { [key: string]: PIXI.Container };
+  [key: string]: { [key: string]: SquareDrawer };
 }

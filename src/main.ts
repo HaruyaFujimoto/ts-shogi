@@ -1,15 +1,3 @@
-import * as PIXI from "pixi.js";
-// import { DiagramDrawer } from "./presentation/drawer/DiagramDrawer";
-import { GamePresenter } from "./presentation/controller/GamePresenter";
-// init pixi
-const canvas_props = {
-  width: 900,
-  height: 900,
-  backgroundColor: 0x999999,
-  resolution: window.devicePixelRatio || 1,
-  autoResize: true,
-};
-const app = new PIXI.Application({ ...canvas_props });
-document.body.appendChild(app.view);
+import { DiagramController } from "./presentation/controller/DiagramController";
 
-new GamePresenter(app);
+DiagramController.instance;

@@ -19,11 +19,12 @@ export class GameProgress {
     this.add_move([7, 7], [7, 6]);
     this.add_move([3, 3], [3, 4]);
     this.add_move([8, 8], [2, 2]);
+    this.add_move([3, 1], [2, 2]);
     // const from: Square = this._diagram.shogi_board[7][7];
     // const to: Square = this._diagram.shogi_board[7][6];
     // const move = new Move(from, to, false);
-    console.dir(this._diagram.piece_in_hands.get(Player.Sente)?.pieces);
-    console.dir(this._diagram.piece_in_hands.get(Player.Gote)?.pieces);
+    console.dir(this._diagram.piece_stands.get(Player.Sente)?.pieces);
+    console.dir(this._diagram.piece_stands.get(Player.Gote)?.pieces);
   }
 
   get diagram(): Diagram {

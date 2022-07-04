@@ -12,6 +12,7 @@ import {
   Lance,
   Pawn,
 } from "../value/PieceClassMoves";
+import { FileRank, FileRankNumber } from "../value/FileRank";
 
 export class PieceMove {
   static readonly OneSquareMoveArea: { [key: string]: PieceMoveArea[] } = {
@@ -55,25 +56,36 @@ export class PieceMove {
     const current_file = this.current_position.file;
     const current_rank = this.current_position.rank;
     // functions
-    const piece_move_area_to_square_position = (
+    const piece_move_area_as_number = (
       number: PieceMoveArea
-    ): SquarePosition => {
+    ): number[] => {
       const [file_destination, rank_destination] =
         PieceMove.getFileRankFromNumber(number);
-      const file = current_file + file_destination;
-      const rank = current_rank + rank_destination;
-      const square_position = new SquarePosition(file, rank);
+      const file_as_number: number = current_file + file_destination;
+      const rank_as_number: number = current_rank + rank_destination;
       // square_position_list.push(square_position);
-      return square_position;
+      return [file_as_number, rank_as_number];
     };
     const remove_square_out_of_shogi_board = (
-      square_position: SquarePosition
-    ) => square_position.is_in_shogi_board;
+      file_rank_as_number: number[]
+    ) => {
+      const file_as_number: number = file_rank_as_number[0];
+      const rank_as_number: number = file_rank_as_number[1];
+      return FileRank.is_in_file_rank_number(file_as_number, rank_as_number);
+    }
+    const generate_square_position_from_number = (
+      file_rank_as_number: number[]
+    ) => {
+      const file: FileRankNumber = FileRank.cast_number_to_file_rank(file_rank_as_number[0]);
+      const rank: FileRankNumber =  FileRank.cast_number_to_file_rank(file_rank_as_number[1])
+      return new SquarePosition(file, rank);
+    }
 
     // result
     const square_position_list: SquarePosition[] = specific_piece_can_move_area
-      .map(piece_move_area_to_square_position)
-      .filter(remove_square_out_of_shogi_board);
+      .map(piece_move_area_as_number)
+      .filter(remove_square_out_of_shogi_board)
+      .map(generate_square_position_from_number);
     return square_position_list;
   }
 

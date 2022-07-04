@@ -1,11 +1,12 @@
 import { Diagram } from "../model/Diagram";
+import { FileRankPair } from "../value/FileRank";
 import { Move } from "../value/Move";
 import { PieceInHand } from "../value/PieceInHand";
-import { FileRank, Square } from "../value/Square";
+import { Square } from "../value/Square";
 
 type MoveOption = {
-  from?: FileRank;
-  to: FileRank;
+  from?: FileRankPair;
+  to: FileRankPair;
   promotion: boolean;
 };
 

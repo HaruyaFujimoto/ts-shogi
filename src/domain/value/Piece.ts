@@ -89,4 +89,12 @@ export class Piece {
     };
     this._master = swap_player_type[this._master];
   }
+
+  public equals(piece: Piece): boolean {
+    return (
+      this.type == piece.type &&
+      this._master == piece.master &&
+      this.is_promoted == piece.is_promoted
+    );
+  }
 }

@@ -13,18 +13,53 @@ export class PieceDrawer {
     Lance: "assets/syougi_koma01_a_11.png",
     Pawn: "assets/syougi_koma01_a_13.png",
   };
-  constructor(private container: PIXI.Container, private piece: Piece) {
-    const file_name = PieceDrawer.piece_asset_map[this.piece.type];
+
+  private sprite: PIXI.Sprite|null = null;
+  constructor(
+    private container: PIXI.Container,
+    private piece: Piece|null
+  ) {
+    if (piece) {
+      this.put_piece(piece);
+    }
+  }
+
+  public update(piece: Piece|null) {
+    // guard
+    if (! this.piece && ! piece) {
+      return;
+    }
+    if (piece && this.piece?.equals(piece)) {
+      return;
+    }
+    // update
+    if (piece) {
+      this.put_piece(piece);
+    } else {
+      this.remove_piece();
+    }
+  }
+
+  public put_piece(piece: Piece) {
+    this.remove_piece();
+    const file_name = PieceDrawer.piece_asset_map[piece.type];
 
     const sprite = PIXI.Sprite.from(file_name);
     const ratio = 5 / 6; //  width / height
-    sprite.height = container.height - 10;
+    sprite.height = this.container.height - 10;
     sprite.width = sprite.height * ratio;
     // const ratio = 36 / 240;
     // sprite.scale.x = ratio;
     // sprite.scale.y = ratio;
-    this.rotate_piece(this.piece.master, sprite);
+    this.rotate_piece(piece.master, sprite);
     this.container.addChild(sprite);
+    this.sprite = sprite;
+  }
+
+  public remove_piece() {
+    if (this.sprite) {
+      this.container.removeChild(this.sprite);
+    }
   }
 
   private rotate_piece(player_type: PlayerType, sprite: PIXI.Sprite) {

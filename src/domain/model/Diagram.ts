@@ -1,15 +1,16 @@
 import { ShogiBoard } from "../value/ShogiBoard";
 import { PieceStand, PieceStands } from "./PieceStand";
-import { range } from "../service/utils";
 import { Move } from "../value/Move";
 import { Piece, PiecePosition } from "../value/Piece";
 import { Player, PlayerType } from "../value/Player";
 import { PieceInHand } from "../value/PieceInHand";
 import { Turn } from "../value/Turn";
-import { Square, FileRank } from "../value/Square";
+import { Square } from "../value/Square";
+import { FileRankPair } from "../value/FileRank";
+import { range } from "../service/utils";
 
 export class Diagram {
-  private _piece_in_hands: PieceStands = new Map([
+  private _piece_stands: PieceStands = new Map([
     [Player.Sente, new PieceStand(Player.Sente, [])],
     [Player.Gote, new PieceStand(Player.Gote, [])],
   ]);
@@ -20,7 +21,7 @@ export class Diagram {
     piece_in_hands?: PieceStands
   ) {
     if (piece_in_hands) {
-      this._piece_in_hands = piece_in_hands;
+      this._piece_stands = piece_in_hands;
     }
   }
 
@@ -28,15 +29,15 @@ export class Diagram {
     return this._shogi_board;
   }
 
-  get piece_in_hands(): PieceStands {
-    return this._piece_in_hands;
+  get piece_stands(): PieceStands {
+    return this._piece_stands;
   }
 
   get turn(): PlayerType {
     return this._turn.current_turn;
   }
 
-  public get_square(file_rank: FileRank): Square {
+  public get_square(file_rank: FileRankPair): Square {
     return this.shogi_board[file_rank[0]][file_rank[1]];
   }
 
@@ -69,7 +70,7 @@ export class Diagram {
       target_position_piece.be_taken();
       // 駒台に駒を増やす
       const player: PlayerType = move.piece.master;
-      this._piece_in_hands.get(player)?.get_piece(target_position_piece);
+      this._piece_stands.get(player)?.get_piece(target_position_piece);
     }
   }
 
@@ -88,7 +89,7 @@ export class Diagram {
       from.piece = null;
     }
     if (from instanceof PieceInHand) {
-      this.piece_in_hands.get(from.master)?.release_piece(piece);
+      this.piece_stands.get(from.master)?.release_piece(piece);
     }
     const target_position_piece = to.piece;
     to.piece = piece;

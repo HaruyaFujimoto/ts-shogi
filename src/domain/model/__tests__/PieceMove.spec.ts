@@ -1,5 +1,5 @@
-import { PieceMove } from "../../model/PieceMove";
-import { SquarePosition } from "../SquarePosition";
+import { PieceMove } from "../PieceMove";
+import { SquarePosition } from "../../value/SquarePosition";
 
 test("get PieceMove test,", () => {
   let piece_move = new PieceMove("King", new SquarePosition(1, 1));
