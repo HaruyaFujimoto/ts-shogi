@@ -1,40 +1,28 @@
 import * as PIXI from "pixi.js";
-import { PieceDrawer } from "./PieceDrawer";
-import { ShogiBoardDrawer } from "./ShogiBoardDrawer";
-import { create_pixi_container } from "../PIXIApplication";
-import { UISquare } from "../model/UISquare";
+import { PieceStand } from "../../domain/model/PieceStand";
+import { Piece } from "../../domain/value/Piece";
 import { ClickEventController } from "../controller/ClickEventController";
 import { GameController } from "../controller/GameController";
-import { Piece } from "../../domain/value/Piece";
-import { SquarePosition } from "../../domain/value/SquarePosition";
-import { PieceStand } from "../../domain/model/PieceStand";
+import { UISquareInStand } from "../model/UISquareInStand";
+import { create_pixi_container } from "../PIXIApplication";
+import { PieceDrawer } from "./PieceDrawer";
+import { ShogiBoardDrawer } from "./ShogiBoardDrawer";
+import { ISquareDrawer } from "./SquareDrawer";
 
-export interface SquareDrawers {
-  [key: string]: { [key: string]: SquareDrawer };
-}
-
-export interface ISquareDrawer {
-  focus: () => boolean;
-  unfocus: () => void;
-  position: SquarePosition | PieceStand;
-  piece: Piece | null;
-}
-
-export class SquareDrawer implements ISquareDrawer {
+export class SquareInStandDrawer implements ISquareDrawer {
   private readonly square_color = {
     normal: ShogiBoardDrawer.shogi_board_color,
     selected: 0xff4b4b,
-    last_move_to: 0xe68080,
   };
-  private readonly line_width = ShogiBoardDrawer.line_width;
 
   private container: PIXI.Container;
   private piece_drawer: PieceDrawer;
 
   private sprite: PIXI.Sprite;
   private graphic: PIXI.Graphics;
+  private square_status: "normal" | "selected" | "last_move_to" = "normal";
   constructor(
-    private _ui_square: UISquare,
+    private ui_square_in_stand: UISquareInStand,
     x: number,
     y: number,
     width: number,
@@ -47,9 +35,17 @@ export class SquareDrawer implements ISquareDrawer {
     this.update_square_graphic();
     this.piece_drawer = new PieceDrawer(
       this.container,
-      this._ui_square.value.piece
+      this.ui_square_in_stand.piece
     );
     this.attatch_click_event(this.sprite);
+  }
+
+  get position(): PieceStand {
+    return this.ui_square_in_stand.ui_piece_stand.value;
+  }
+
+  get piece(): Piece {
+    return this.ui_square_in_stand.piece;
   }
 
   public update() {
@@ -57,24 +53,9 @@ export class SquareDrawer implements ISquareDrawer {
     this.update_square_graphic();
   }
 
-  get position(): SquarePosition {
-    return this._ui_square.value.position;
-  }
-
-  get piece(): Piece | null {
-    return this._ui_square.value.piece;
-  }
-
-  get ui_square() {
-    return this._ui_square;
-  }
-
   private get color() {
-    if (this._ui_square.is_selected) {
+    if (this.ui_square_in_stand.is_selected) {
       return this.square_color.selected;
-    }
-    if (this._ui_square.is_last_move_to) {
-      return this.square_color.last_move_to;
     }
     return this.square_color.normal;
   }
@@ -82,7 +63,6 @@ export class SquareDrawer implements ISquareDrawer {
   private update_square_graphic() {
     const color = this.color;
     this.graphic
-      .lineStyle(this.line_width, 0, 0.85)
       .beginFill(color)
       .drawRect(0, 0, this.sprite.width, this.sprite.height)
       .endFill();
@@ -123,7 +103,8 @@ export class SquareDrawer implements ISquareDrawer {
   private attatch_click_event(sprite: PIXI.Sprite) {
     sprite.on("click", () => {
       // console.log(this.sprite.position);
-      const skip_condition = this._ui_square.is_selected;
+      const skip_condition =
+        this.ui_square_in_stand.number == 0 || this.square_status == "selected";
       if (skip_condition) {
         return;
       }
@@ -141,10 +122,10 @@ export class SquareDrawer implements ISquareDrawer {
 
   public focus(): boolean {
     if (
-      this._ui_square.value.piece &&
-      GameController.game.turn == this._ui_square.value.piece.master
+      this.ui_square_in_stand.piece &&
+      GameController.game.turn == this.ui_square_in_stand.piece.master
     ) {
-      this._ui_square.select();
+      this.ui_square_in_stand.select();
       this.update_square_graphic();
       return true;
     }
@@ -152,7 +133,7 @@ export class SquareDrawer implements ISquareDrawer {
   }
 
   public unfocus() {
-    this.ui_square.unselect();
+    this.ui_square_in_stand.unselect();
     this.update_square_graphic();
   }
 }

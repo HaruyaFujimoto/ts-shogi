@@ -17,6 +17,10 @@ export class GameController {
     return this._instance;
   }
 
+  static get game() {
+    return GameController.instance.game;
+  }
+
   get game() {
     return this._game;
   }

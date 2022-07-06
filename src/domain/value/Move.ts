@@ -1,5 +1,5 @@
+import { PieceStand } from "../model/PieceStand";
 import { Piece, PiecePosition } from "./Piece";
-import { PieceInHand } from "./PieceInHand";
 import { Square } from "./Square";
 
 export class Move {
@@ -10,7 +10,7 @@ export class Move {
     public readonly promotion: boolean,
     piece?: Piece
   ) {
-    if (from instanceof PieceInHand && !piece) {
+    if (from instanceof PieceStand && !piece) {
       throw Error(
         "The move from piece_in_hand, argument 'piece' is necessary."
       );

@@ -3,10 +3,9 @@ import { PieceStand, PieceStands } from "./PieceStand";
 import { Move } from "../value/Move";
 import { Piece, PiecePosition } from "../value/Piece";
 import { Player, PlayerType } from "../value/Player";
-import { PieceInHand } from "../value/PieceInHand";
 import { Turn } from "../value/Turn";
 import { Square } from "../value/Square";
-import { FileRankPair } from "../value/FileRank";
+import { FileRankPair } from "../value/FileRankNumber";
 import { range } from "../service/utils";
 
 export class Diagram {
@@ -50,7 +49,7 @@ export class Diagram {
     if (move.from instanceof Square) {
       this._moved_from_square_position(move);
     }
-    if (move.from instanceof PieceInHand) {
+    if (move.from instanceof PieceStand) {
       this._moved_from_piece_in_hand(move);
     }
     this._turn.advance();
@@ -70,12 +69,12 @@ export class Diagram {
       target_position_piece.be_taken();
       // 駒台に駒を増やす
       const player: PlayerType = move.piece.master;
-      this._piece_stands.get(player)?.get_piece(target_position_piece);
+      this._piece_stands.get(player)?.take_piece(target_position_piece);
     }
   }
 
   private _moved_from_piece_in_hand(move: Move) {
-    const from: PieceInHand = <PieceInHand>move.from;
+    const from: PieceStand = <PieceStand>move.from;
     const to: Square = move.to;
     this._move_piece_into_square_position(from, to, move.piece);
   }
@@ -88,7 +87,7 @@ export class Diagram {
     if (from instanceof Square) {
       from.piece = null;
     }
-    if (from instanceof PieceInHand) {
+    if (from instanceof PieceStand) {
       this.piece_stands.get(from.master)?.release_piece(piece);
     }
     const target_position_piece = to.piece;

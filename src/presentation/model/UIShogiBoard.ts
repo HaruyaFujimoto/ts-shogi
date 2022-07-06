@@ -1,5 +1,5 @@
-import { SquareDrawer } from "../drawer/SquareDrawer";
+import { UISquare } from "./UISquare";
 
 export interface UIShogiBoard {
-  [key: string]: { [key: string]: SquareDrawer };
+  [key: string]: { [key: string]: UISquare };
 }

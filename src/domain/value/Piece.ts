@@ -1,9 +1,9 @@
-import { PieceInHand } from "./PieceInHand";
+import { PieceStand } from "../model/PieceStand";
 import { Player, PlayerType } from "./Player";
 import { Square } from "./Square";
 
 // for player data
-export type PiecePosition = Square | PieceInHand;
+export type PiecePosition = Square | PieceStand;
 
 // define types
 export const PieceTypes = [

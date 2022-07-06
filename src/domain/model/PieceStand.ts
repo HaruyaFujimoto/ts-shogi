@@ -2,30 +2,41 @@ import { PlayerType } from "../value/Player";
 import { Piece, PieceType, PieceTypes } from "../value/Piece";
 
 export type PieceStands = Map<PlayerType, PieceStand>;
+export type PiecesInStand = { [key: string]: number };
 
 export class PieceStand {
-  private _pieces: { [key: string]: number } = {};
-  constructor(public readonly master: PlayerType, pieces: Piece[] = []) {
+  constructor(public readonly master: PlayerType, private _pieces: Piece[]) {}
+
+  get pieces(): PiecesInStand {
+    const piece_map: PiecesInStand = {};
     PieceTypes.map((piece_type: PieceType) => {
-      this._pieces[piece_type] = 0;
+      piece_map[piece_type] = 0;
     });
-    pieces.map((piece: Piece) => {
-      this._pieces[piece.type] += 1;
+    this._pieces.map((piece: Piece) => {
+      piece_map[piece.type] += 1;
     });
+    return piece_map;
   }
 
-  get pieces(): { [key: string]: number } {
-    return this._pieces;
+  public get_piece(piece_type: PieceType): Piece {
+    const piece_index = this._pieces.findIndex((piece) => {
+      piece.type == piece_type;
+    });
+    if (piece_index < 0) {
+      throw Error(`Piece stand has no ${piece_type}.`);
+    }
+    return this._pieces[piece_index];
   }
 
-  public get_piece(piece: Piece) {
-    this._pieces[piece.type] += 1;
+  public take_piece(piece: Piece): void {
+    this._pieces.push(piece);
   }
 
-  public release_piece(piece: Piece) {
-    if (this._pieces[piece.type] < 1) {
+  public release_piece(piece: Piece): void {
+    const piece_index = this._pieces.indexOf(piece);
+    if (piece_index < 0) {
       throw Error(`Piece stand has no ${piece.type}.`);
     }
-    this._pieces[piece.type] -= 1;
+    this._pieces.splice(piece_index, 1);
   }
 }

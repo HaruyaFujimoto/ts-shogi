@@ -1,4 +1,4 @@
-import { FileRank } from "../value/FileRank";
+import { FileRank } from "../model/FileRank";
 import { ShogiBoard } from "../value/ShogiBoard";
 import { Square } from "../value/Square";
 import { SquarePosition } from "../value/SquarePosition";

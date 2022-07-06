@@ -3,8 +3,8 @@ import { Kifu } from "../../domain/model/Kifu";
 import { DiagramFactory } from "../../domain/service/DiagramFactory";
 import { Move } from "../../domain/value/Move";
 import { MoveFactory } from "../../domain/service/MoveFactory";
-import { FileRank } from "../../domain/value/Square";
-import { Player } from "../../domain/value/Player";
+import { Player, PlayerType } from "../../domain/value/Player";
+import { FileRankPair } from "../../domain/value/FileRankNumber";
 // import { Rule } from "./Rule";
 
 export class GameProgress {
@@ -16,10 +16,10 @@ export class GameProgress {
     this._diagram = new DiagramFactory().default_diagram();
     // create Players and Turn
     this._kifu = new Kifu(this._diagram);
-    this.add_move([7, 7], [7, 6]);
-    this.add_move([3, 3], [3, 4]);
-    this.add_move([8, 8], [2, 2]);
-    this.add_move([3, 1], [2, 2]);
+    this.add_move_as_pair([7, 7], [7, 6]);
+    this.add_move_as_pair([3, 3], [3, 4]);
+    this.add_move_as_pair([8, 8], [2, 2]);
+    // this.add_move([3, 1], [2, 2]);
     // const from: Square = this._diagram.shogi_board[7][7];
     // const to: Square = this._diagram.shogi_board[7][6];
     // const move = new Move(from, to, false);
@@ -35,13 +35,26 @@ export class GameProgress {
     return this._kifu;
   }
 
-  private add_move(from: FileRank, to: FileRank, promotion = false) {
+  get turn(): PlayerType {
+    return this._diagram.turn;
+  }
+
+  private add_move_as_pair(
+    from: FileRankPair,
+    to: FileRankPair,
+    promotion = false
+  ) {
     const move: Move = new MoveFactory().create_move(this._diagram, {
       from: from,
       to: to,
       promotion: promotion,
     });
-    this._diagram.moved(move);
     this._kifu.add_move(move);
+    this._diagram.moved(move);
+  }
+
+  public add_move(move: Move) {
+    this._kifu.add_move(move);
+    this._diagram.moved(move);
   }
 }

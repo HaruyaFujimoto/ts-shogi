@@ -1,19 +1,18 @@
 import * as PIXI from "pixi.js";
-import { FileRank } from "../../domain/value/FileRank";
-import { ShogiBoard } from "../../domain/value/ShogiBoard";
-import { Square } from "../../domain/value/Square";
+import { FileRank } from "../../domain/model/FileRank";
 import { UIShogiBoard } from "../model/UIShogiBoard";
+import { UISquare } from "../model/UISquare";
 import { create_pixi_container } from "../PIXIApplication";
-import { SquareDrawer } from "./SquareDrawer";
+import { SquareDrawer, SquareDrawers } from "./SquareDrawer";
 
 export class ShogiBoardDrawer {
   static readonly shogi_board_color: number = 0xe59e50;
   static readonly line_width: number = 2;
 
   private container: PIXI.Container;
-  private _square_drawers: UIShogiBoard = {};
+  private _square_drawers: SquareDrawers = {};
   constructor(
-    private shogi_board: ShogiBoard,
+    private _ui_shogi_board: UIShogiBoard,
     x: number,
     y: number,
     private square_size: number
@@ -32,15 +31,15 @@ export class ShogiBoardDrawer {
     return this.square_size * 11;
   }
 
-  get square_containers(): UIShogiBoard {
+  get square_containers(): SquareDrawers {
     return this._square_drawers;
   }
 
   public update(): void {
-    FileRank.map((file, rank) => {
-      const square: Square = this.shogi_board[file][rank];
-      this._square_drawers[file][rank].update(square);
-    });
+    this.draw_all_squares();
+    // FileRank.map((file, rank) => {
+    //   this._square_drawers[file][rank].update();
+    // });
   }
 
   private draw_background() {
@@ -66,12 +65,9 @@ export class ShogiBoardDrawer {
     FileRank.map((file, rank) => {
       const x = this.container.x + this.square_size * (10 - file);
       const y = this.container.y + this.square_size * rank;
-      const square = this.shogi_board[file][rank];
-      if (!this._square_drawers[file]) {
-        this._square_drawers[file] = {};
-      }
+      const ui_square: UISquare = this._ui_shogi_board[file][rank];
       this._square_drawers[file][rank] = new SquareDrawer(
-        square,
+        ui_square,
         x,
         y,
         this.square_size,

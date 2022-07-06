@@ -12,7 +12,8 @@ import {
   Lance,
   Pawn,
 } from "../value/PieceClassMoves";
-import { FileRank, FileRankNumber } from "../value/FileRank";
+import { FileRankNumber } from "../value/FileRankNumber";
+import { FileRank } from "./FileRank";
 
 export class PieceMove {
   static readonly OneSquareMoveArea: { [key: string]: PieceMoveArea[] } = {
