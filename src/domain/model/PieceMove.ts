@@ -34,8 +34,8 @@ export class PieceMove {
   };
 
   constructor(
-    private piece_type: PieceType,
-    // private diagram: Diagram,
+    private _piece_type: PieceType,
+    // private _diagram: Diagram,
     private current_position: SquarePosition
   ) {}
 
@@ -43,17 +43,17 @@ export class PieceMove {
   public getCanMoveArea(): SquarePosition[] {
     const is_one_square_piece = Object.keys(
       PieceMove.OneSquareMoveArea
-    ).includes(this.piece_type);
+    ).includes(this._piece_type);
     if (is_one_square_piece) {
-      return this.getSquarePotisionForOneSquare();
+      return this._getSquarePotisionForOneSquare();
     }
     return [];
   }
 
-  private getSquarePotisionForOneSquare(): SquarePosition[] {
+  private _getSquarePotisionForOneSquare(): SquarePosition[] {
     // specific piece props
     const specific_piece_can_move_area =
-      PieceMove.OneSquareMoveArea[this.piece_type];
+      PieceMove.OneSquareMoveArea[this._piece_type];
     const current_file = this.current_position.file;
     const current_rank = this.current_position.rank;
     // functions

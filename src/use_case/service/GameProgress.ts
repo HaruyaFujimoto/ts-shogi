@@ -16,9 +16,9 @@ export class GameProgress {
     this._diagram = new DiagramFactory().default_diagram();
     // create Players and Turn
     this._kifu = new Kifu(this._diagram);
-    this.add_move_as_pair([7, 7], [7, 6]);
-    this.add_move_as_pair([3, 3], [3, 4]);
-    this.add_move_as_pair([8, 8], [2, 2]);
+    this._add_move_as_pair([7, 7], [7, 6]);
+    this._add_move_as_pair([3, 3], [3, 4]);
+    this._add_move_as_pair([8, 8], [2, 2]);
     // this.add_move([3, 1], [2, 2]);
     // const from: Square = this._diagram.shogi_board[7][7];
     // const to: Square = this._diagram.shogi_board[7][6];
@@ -39,7 +39,7 @@ export class GameProgress {
     return this._diagram.turn;
   }
 
-  private add_move_as_pair(
+  private _add_move_as_pair(
     from: FileRankPair,
     to: FileRankPair,
     promotion = false

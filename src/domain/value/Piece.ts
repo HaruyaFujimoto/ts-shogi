@@ -97,4 +97,8 @@ export class Piece {
       this.is_promoted == piece.is_promoted
     );
   }
+
+  public replicate(): Piece {
+    return new Piece(this.type, this._master, this.is_promoted);
+  }
 }

@@ -20,7 +20,7 @@ export class PieceStand {
 
   public get_piece(piece_type: PieceType): Piece {
     const piece_index = this._pieces.findIndex((piece) => {
-      piece.type == piece_type;
+      return piece.type == piece_type;
     });
     if (piece_index < 0) {
       throw Error(`Piece stand has no ${piece_type}.`);

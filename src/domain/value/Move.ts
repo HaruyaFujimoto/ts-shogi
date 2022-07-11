@@ -23,7 +23,7 @@ export class Move {
     if (piece) {
       this.piece = piece;
     } else {
-      this.piece = <Piece>(<Square>from).piece;
+      this.piece = (from as Square).piece as Piece;
     }
   }
 }

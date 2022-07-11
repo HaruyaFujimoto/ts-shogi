@@ -2,6 +2,14 @@ import * as PIXI from "pixi.js";
 import { Piece } from "../../domain/value/Piece";
 import { Player, PlayerType } from "../../domain/value/Player";
 
+const fr = (container: PIXI.Container) => {
+  const x = container.x;
+  const y = container.y;
+  const file = 10 - (x - 90) / 40;
+  const rank = y / 40;
+  console.log(file, rank);
+};
+
 export class PieceDrawer {
   static readonly piece_asset_map: { [key: string]: string } = {
     King: "assets/syougi_koma01_a_15.png",
@@ -14,28 +22,31 @@ export class PieceDrawer {
     Pawn: "assets/syougi_koma01_a_13.png",
   };
 
-  private last_update_piece: Piece | null = null;
-  private sprite: PIXI.Sprite | null = null;
-  constructor(private container: PIXI.Container, private piece: Piece | null) {
-    if (piece) {
-      this.put_piece(piece);
+  private _last_update_piece: Piece | null = null;
+  private _sprite: PIXI.Sprite | null = null;
+  constructor(
+    private _container: PIXI.Container,
+    private _piece: Piece | null
+  ) {
+    if (_piece) {
+      this.put_piece(_piece);
     }
   }
 
-  public update() {
-    // guard
-    if (!this.piece && !this.last_update_piece) {
-      console.log("both null");
+  public update(piece: Piece | null) {
+    this._piece = piece;
+    if (!this._piece && !this._last_update_piece) {
       return;
     }
-    if (this.last_update_piece && this.piece?.equals(this.last_update_piece)) {
-      console.log("no diff");
+    if (
+      this._last_update_piece &&
+      this._piece?.equals(this._last_update_piece)
+    ) {
       return;
     }
     // update
-    console.log("after guard");
-    if (this.piece) {
-      this.put_piece(this.piece);
+    if (this._piece) {
+      this.put_piece(this._piece);
     } else {
       this.remove_piece();
     }
@@ -47,32 +58,36 @@ export class PieceDrawer {
 
     const sprite = PIXI.Sprite.from(file_name);
     const ratio = 5 / 6; //  width / height
-    sprite.height = this.container.height - 10;
+    sprite.height = this._container.height - 10;
     sprite.width = sprite.height * ratio;
     // const ratio = 36 / 240;
     // sprite.scale.x = ratio;
     // sprite.scale.y = ratio;
-    this.rotate_piece(piece.master, sprite);
-    this.container.addChild(sprite);
-    this.sprite = sprite;
-    this.last_update_piece = piece;
+    this._rotate_piece_sprite(piece.master, sprite, this._container);
+    this._container.addChild(sprite);
+    this._sprite = sprite;
+    this._last_update_piece = piece;
   }
 
   public remove_piece() {
-    if (this.sprite) {
-      this.container.removeChild(this.sprite);
+    if (this._sprite) {
+      this._container.removeChild(this._sprite);
     }
   }
 
-  private rotate_piece(player_type: PlayerType, sprite: PIXI.Sprite) {
+  private _rotate_piece_sprite(
+    player_type: PlayerType,
+    sprite: PIXI.Sprite,
+    container: PIXI.Container
+  ) {
     sprite.anchor.set(0.5);
-    // console.log(this.container.height, sprite.height);
-    // sprite.x = (this.container.width - sprite.width) / 2;
-    sprite.x = this.container.width / 2;
-    sprite.y = this.container.height / 2;
+    // console.log(container.height, sprite.height);
+    // sprite.x = (container.width - sprite.width) / 2;
+    sprite.x = container.width / 2;
+    sprite.y = container.height / 2;
     if (player_type == Player.Sente) {
       sprite.angle = 0;
-      // sprite.y += (this.container.height - sprite.height) / 2;
+      // sprite.y += (container.height - sprite.height) / 2;
       // sprite.y += 1;
       return;
     }

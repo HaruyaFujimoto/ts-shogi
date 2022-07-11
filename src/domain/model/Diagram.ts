@@ -56,42 +56,46 @@ export class Diagram {
   }
 
   private _moved_from_square_position(move: Move) {
-    const from: Square = <Square>move.from;
+    const from: Square = move.from as Square;
     const to: Square = move.to;
-    const target_position_piece = this._move_piece_into_square_position(
+    const target_position_piece = this._put_piece_into_square_position(
       from,
       to,
       move.piece
     );
+    console.dir(target_position_piece);
     // 移動先に駒が居たら場合
     if (target_position_piece) {
       // 駒が取られる (駒の所有者の変更)
       target_position_piece.be_taken();
       // 駒台に駒を増やす
       const player: PlayerType = move.piece.master;
-      this._piece_stands.get(player)?.take_piece(target_position_piece);
+      const piece_stand = this._piece_stands.get(player) as PieceStand;
+      piece_stand.take_piece(target_position_piece);
     }
   }
 
   private _moved_from_piece_in_hand(move: Move) {
-    const from: PieceStand = <PieceStand>move.from;
+    const from: PieceStand = move.from as PieceStand;
     const to: Square = move.to;
-    this._move_piece_into_square_position(from, to, move.piece);
+    this._put_piece_into_square_position(from, to, move.piece);
   }
 
-  private _move_piece_into_square_position(
+  private _put_piece_into_square_position(
     from: PiecePosition,
     to: Square,
     piece: Piece
   ): Piece | null {
+    // remove piece in position come from
+
     if (from instanceof Square) {
-      from.piece = null;
+      from.remove_piece();
     }
     if (from instanceof PieceStand) {
-      this.piece_stands.get(from.master)?.release_piece(piece);
+      const piece_stand = this.piece_stands.get(from.master) as PieceStand;
+      piece_stand.release_piece(piece);
     }
-    const target_position_piece = to.piece;
-    to.piece = piece;
+    const target_position_piece = to.put_piece(piece);
     return target_position_piece;
   }
 

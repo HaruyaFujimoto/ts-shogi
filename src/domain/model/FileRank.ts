@@ -32,14 +32,20 @@ export class FileRank {
     return file_rank_numbers[index];
   }
 
-  static map(func: (file: FileRankNumber, rank: FileRankNumber) => any) {
-    const result_array = [];
-    for (let file of FileRank.numbers) {
-      for (let rank of FileRank.numbers) {
+  static map<T>(func: (file: FileRankNumber, rank: FileRankNumber) => T): T[] {
+    const result_array: T[] = [];
+    FileRank.numbers.map((file) => {
+      FileRank.numbers.map((rank) => {
         const result = func(file, rank);
         result_array.push(result);
-      }
-    }
+      });
+    });
+    // for (let file of FileRank.numbers) {
+    //   for (let rank of FileRank.numbers) {
+    //     const result = func(file, rank);
+    //     result_array.push(result);
+    //   }
+    // }
     return result_array;
   }
 }
