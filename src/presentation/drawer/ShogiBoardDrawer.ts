@@ -1,31 +1,30 @@
 import * as PIXI from "pixi.js";
-import { FileRank } from "../../domain/model/FileRank";
-import { FileRankPair } from "../../domain/value/FileRankNumber";
-import { UIShogiBoard } from "../model/UIShogiBoard";
-import { UISquare } from "../model/UISquare";
 import { create_pixi_container } from "../PIXIApplication";
-import { SquareDrawer, SquareDrawers } from "./SquareDrawer";
 
 export class ShogiBoardDrawer {
   static readonly shogi_board_color: number = 0xe59e50;
+  static readonly square_color = {
+    normal: ShogiBoardDrawer.shogi_board_color,
+    selected: 0xff4b4b,
+    last_move_to: 0xe68080,
+  };
+  static readonly square_size: number = 40;
+  static readonly board_stand_gap: number = 10;
+
   static readonly line_width: number = 2;
 
   private _container: PIXI.Container;
-  private _square_drawers: SquareDrawers;
-  constructor(
-    private _ui_shogi_board: UIShogiBoard,
-    x: number,
-    y: number,
-    private _square_size: number
-  ) {
+  constructor(x: number, y: number, private _square_size: number) {
     this._container = create_pixi_container(x, y, this.width, this.height);
     this._draw_background();
-    this._square_drawers = this._create_all_squares(
-      this._ui_shogi_board,
-      this._container,
-      this._square_size
-    );
-    // this.draw_pieces();
+  }
+
+  get x(): number {
+    return this._container.x;
+  }
+
+  get y(): number {
+    return this._container.y;
   }
 
   get width(): number {
@@ -36,28 +35,7 @@ export class ShogiBoardDrawer {
     return this._square_size * 11;
   }
 
-  get square_containers(): SquareDrawers {
-    return this._square_drawers;
-  }
-
-  get selected_square_drawer(): SquareDrawer | null {
-    const file_rank_pair: FileRankPair | null = FileRank.find( (file, rank) => {
-      return this._ui_shogi_board[file][rank].is_selected
-    });
-    if (file_rank_pair) {
-      const file = file_rank_pair[0];
-      const rank = file_rank_pair[1];
-      return this._square_drawers[file][rank];
-    }
-    return null;
-  }
-
-  public update(): void {
-    // this._create_all_squares();
-    FileRank.map((file, rank) => {
-      this._square_drawers[file][rank].update();
-    });
-  }
+  public update(): void {}
 
   private _draw_background() {
     const board_size = this._square_size * 11;
@@ -72,30 +50,5 @@ export class ShogiBoardDrawer {
     graphics.on("click", (e) => {
       console.dir(e);
     });
-  }
-
-  private _create_all_squares(
-    ui_shogi_board: UIShogiBoard,
-    container: PIXI.Container,
-    square_size: number
-  ): SquareDrawers {
-    const square_drawers: SquareDrawers = {};
-    // init two-dimensional
-    FileRank.numbers.map((file) => {
-      square_drawers[file] = {};
-    });
-    FileRank.map((file, rank) => {
-      const x = container.x + square_size * (10 - file);
-      const y = container.y + square_size * rank;
-      const ui_square: UISquare = ui_shogi_board[file][rank];
-      square_drawers[file][rank] = new SquareDrawer(
-        ui_square,
-        x,
-        y,
-        square_size,
-        square_size
-      );
-    });
-    return square_drawers;
   }
 }

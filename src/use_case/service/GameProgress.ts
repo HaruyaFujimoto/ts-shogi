@@ -56,5 +56,6 @@ export class GameProgress {
   public add_move(move: Move) {
     this._kifu.add_move(move);
     this._diagram.moved(move);
+    console.log(this._diagram.turn);
   }
 }

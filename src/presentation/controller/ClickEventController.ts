@@ -1,15 +1,15 @@
 import { MoveFactory, MoveOption } from "../../domain/service/MoveFactory";
-import { DiagramDrawer } from "../drawer/DiagramDrawer";
 // import { SquarePosition } from "../../domain/value/SquarePosition";
-import { ISquareDrawer, SquareDrawer } from "../drawer/SquareDrawer";
-import { DrawerController } from "./DrawerController";
+import { UIDiagram } from "../model/UIDiagram";
+import { IUISquare, UISquare } from "../model/UISquare";
 import { GameController } from "./GameController";
+import { UIDiagramController } from "./UIDiagramController";
 
 export class ClickEventController {
   private static _instance: ClickEventController;
   // private static _selected_square_drawer: ISquareDrawer | null;
 
-  private _diagram_drawer: DiagramDrawer = DrawerController.diagram_drawer;
+  private _ui_diagram: UIDiagram = UIDiagramController.ui_diagram;
 
   private constructor() {}
 
@@ -25,20 +25,19 @@ export class ClickEventController {
   //   return DrawerController.diagram_drawer.selected_square_drawer;
   // }
 
-  public click_square(target_drawer: ISquareDrawer) {
-    console.time("selected_drawer")
-    const selected_drawer = this._diagram_drawer.selected_square_drawer;
-    console.timeEnd("selected_drawer")
+  public click_square(target_square: IUISquare) {
+    this._ui_diagram.st;
+    const selected_ui_square = this._ui_diagram.selected_ui_square;
     // 将棋盤の上の駒を移動する
     if (
-      selected_drawer &&
-      target_drawer instanceof SquareDrawer &&
-      selected_drawer instanceof SquareDrawer
+      selected_ui_square?.is_selected &&
+      target_square instanceof UISquare &&
+      selected_ui_square instanceof UISquare
     ) {
       // ここに移動先として正しいかを判定するロジック
       const move_option: MoveOption = {
-        from: selected_drawer.position.pair,
-        to: target_drawer.position.pair,
+        from: selected_ui_square.position.position.pair,
+        to: target_square.position.position.pair,
         promotion: false,
       };
       const move = new MoveFactory().create_move(
@@ -47,21 +46,24 @@ export class ClickEventController {
       );
       console.dir(move);
       GameController.game.add_move(move);
-      console.time("update_diagram_drawer")
-      DrawerController.instance.update();
-      console.timeEnd("update_diagram_drawer")
+      // DrawerController.instance.update();
+      // this._ui_diagram.unfocus_any_square();
+      selected_ui_square.unselect();
+      selected_ui_square.update();
+      target_square.update();
       // ClickEventController._selected_square_drawer = null;
     } else {
-      this._diagram_drawer.focus_any_square(target_drawer);
-      // if (target_drawer.focus()) {
-      //   ClickEventController._selected_square_drawer = target_drawer;
+      this._ui_diagram.focus_any_square(target_square);
+      // target_square.update();
+      // if (target_square.focus()) {
+      //   ClickEventController._selected_square_drawer = target_square;
       // }
     }
     // 適切な駒の移動がなかった場合の処理
-    if (selected_drawer) {
-      selected_drawer.unfocus();
-      this._diagram_drawer.focus_any_square(target_drawer);
-    }
+    // if (selected_ui_square) {
+    //   selected_ui_square.unselect();
+    //   this._ui_diagram.focus_any_square(target_square);
+    // }
   }
 
   // private _

@@ -1,4 +1,8 @@
-import { FileRankNumber, FileRankPair, file_rank_numbers } from "../value/FileRankNumber";
+import {
+  FileRankNumber,
+  FileRankPair,
+  file_rank_numbers,
+} from "../value/FileRankNumber";
 
 export class FileRank {
   static get numbers(): FileRankNumber[] {
@@ -49,12 +53,14 @@ export class FileRank {
     return result_array;
   }
 
-  static find(func: (file: FileRankNumber, rank: FileRankNumber) => boolean) : FileRankPair | null {
+  static find(
+    func: (file: FileRankNumber, rank: FileRankNumber) => boolean
+  ): FileRankPair | null {
     for (let file of FileRank.numbers) {
       for (let rank of FileRank.numbers) {
         const result = func(file, rank);
         if (result) {
-          return [file, rank]
+          return [file, rank];
         }
       }
     }

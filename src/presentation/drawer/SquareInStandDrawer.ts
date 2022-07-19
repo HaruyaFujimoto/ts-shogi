@@ -1,21 +1,11 @@
 import * as PIXI from "pixi.js";
-import { PieceStand } from "../../domain/model/PieceStand";
-import { Piece } from "../../domain/value/Piece";
 import { ClickEventController } from "../controller/ClickEventController";
-import { GameController } from "../controller/GameController";
 import { UISquareInStand } from "../model/UISquareInStand";
 import { create_pixi_container } from "../PIXIApplication";
 import { PieceDrawer } from "./PieceDrawer";
 import { ShogiBoardDrawer } from "./ShogiBoardDrawer";
-import { ISquareDrawer } from "./SquareDrawer";
-import { UIPieceStand } from "../model/UIPieceStand";
 
-export class SquareInStandDrawer implements ISquareDrawer {
-  private readonly _square_color = {
-    normal: ShogiBoardDrawer.shogi_board_color,
-    selected: 0xff4b4b,
-  };
-
+export class SquareInStandDrawer {
   private _container: PIXI.Container;
 
   private _piece_drawer: PieceDrawer;
@@ -24,9 +14,7 @@ export class SquareInStandDrawer implements ISquareDrawer {
   private _graphic: PIXI.Graphics;
   private _square_status: "normal" | "selected" | "last_move_to" = "normal";
   constructor(
-    private _ui_piece_stand: UIPieceStand,
     private _ui_square_in_stand: UISquareInStand,
-    // piece_type: PieceType,
     x: number,
     y: number,
     width: number,
@@ -44,54 +32,30 @@ export class SquareInStandDrawer implements ISquareDrawer {
     );
     // this._graphic = this._add_graphic_into_container(this._container, width, height);
     this._graphic = this._add_graphic_into_container(this._container);
-    this._update_square_graphic();
+    this.update_square_graphic();
     //
     this._piece_drawer = this._create_piece_drawer(this._container);
-    this._update_piece_drawer();
+    this.update_piece_drawer();
     this._attatch_click_event(this._sprite);
   }
 
-  get position(): PieceStand {
-    return this._ui_piece_stand.value;
-  }
-
-  get piece(): Piece {
-    return this._ui_square_in_stand.piece;
-  }
-
-  get ui_square_in_stand(): UISquareInStand {
-    return this._ui_square_in_stand;
-  }
-
   public update() {
-    this._update_square_graphic();
-    this._update_piece_drawer();
-  }
-
-  public focus(): boolean {
-    if (
-      this._ui_square_in_stand.piece &&
-      GameController.game.turn == this._ui_square_in_stand.piece.master
-    ) {
-      this._ui_square_in_stand.select();
-      this._update_square_graphic();
-      return true;
-    }
-    return false;
+    this.update_square_graphic();
+    this.update_piece_drawer();
   }
 
   public unfocus() {
     this._ui_square_in_stand.unselect();
-    this._update_square_graphic();
+    this.update_square_graphic();
   }
 
   private _create_piece_drawer(container: PIXI.Container) {
     return new PieceDrawer(container, null);
   }
 
-  private _update_piece_drawer() {
+  public update_piece_drawer() {
     if (this._ui_square_in_stand.number > 0) {
-      this._piece_drawer.update(this.piece);
+      this._piece_drawer.update(this._ui_square_in_stand.piece);
       return;
     }
     this._piece_drawer.update(null);
@@ -99,12 +63,12 @@ export class SquareInStandDrawer implements ISquareDrawer {
 
   private get _color() {
     if (this._ui_square_in_stand.is_selected) {
-      return this._square_color.selected;
+      return ShogiBoardDrawer.square_color.selected;
     }
-    return this._square_color.normal;
+    return ShogiBoardDrawer.square_color.normal;
   }
 
-  private _update_square_graphic() {
+  public update_square_graphic() {
     const color = this._color;
     this._graphic
       .beginFill(color)
@@ -137,7 +101,7 @@ export class SquareInStandDrawer implements ISquareDrawer {
   ): PIXI.Graphics {
     const graphic = new PIXI.Graphics();
     // graphic.lineStyle(this.line_width, 0, 0.85)
-    //   .beginFill(this._square_color.normal)
+    //   .beginFill(ShogiBoardDrawer.square_color.normal)
     //   .drawRect(0, 0, width, height)
     //   .endFill();
     container.addChild(graphic);
@@ -153,7 +117,7 @@ export class SquareInStandDrawer implements ISquareDrawer {
       if (skip_condition) {
         return;
       }
-      ClickEventController.instance.click_square(this);
+      ClickEventController.instance.click_square(this._ui_square_in_stand);
       // this._square_status = "selected";
       // this.update_square_graphic();
       // const last_selected = SquareDrawer.last_selected_instance;

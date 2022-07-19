@@ -1,19 +1,35 @@
+import { Piece, PiecePosition } from "../../domain/value/Piece";
 import { Square } from "../../domain/value/Square";
+import { GameController } from "../controller/GameController";
+import { SquareDrawer } from "../drawer/SquareDrawer";
 
 export interface IUISquare {
+  position: PiecePosition;
+  is_selected: boolean;
   select: () => void;
   unselect: () => void;
+  update: () => void;
 }
 
 export class UISquare implements IUISquare {
   private static _last_move_to_square: UISquare | null;
   private _is_selected: boolean = false;
   private _is_last_move_to: boolean = false;
-  constructor(private _value: Square) {}
 
-  get value(): Square {
-    return this._value;
+  private _drawer: SquareDrawer;
+  constructor(
+    private _value: Square,
+    x: number,
+    y: number,
+    width: number,
+    height: number
+  ) {
+    this._drawer = this._create_drawer(this, x, y, width, height);
   }
+
+  // get value(): Square {
+  //   return this._value;
+  // }
 
   get is_selected(): boolean {
     return this._is_selected;
@@ -23,12 +39,38 @@ export class UISquare implements IUISquare {
     return this._is_last_move_to;
   }
 
+  get piece(): Piece | null {
+    return this._value._piece;
+  }
+
+  get position(): Square {
+    return this._value;
+  }
+
+  public update() {
+    this._update_drawer();
+  }
+
+  private _update_drawer() {
+    this._drawer.update();
+  }
+
   public select() {
-    this._is_selected = true;
+    if (
+      this._value.piece &&
+      GameController.game.turn == this._value.piece.master
+    ) {
+      console.log("work");
+      this._is_selected = true;
+      this._drawer.update_square_graphic();
+      return true;
+    }
+    return false;
   }
 
   public unselect() {
     this._is_selected = false;
+    this._drawer.update_square_graphic();
   }
 
   public set_as_last_move_to() {
@@ -37,5 +79,16 @@ export class UISquare implements IUISquare {
     }
     this._is_last_move_to = true;
     UISquare._last_move_to_square = this;
+  }
+
+  private _create_drawer(
+    ui_square: UISquare,
+    x: number,
+    y: number,
+    width: number,
+    height: number
+  ): SquareDrawer {
+    const square_drawer = new SquareDrawer(ui_square, x, y, width, height);
+    return square_drawer;
   }
 }

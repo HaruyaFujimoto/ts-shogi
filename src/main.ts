@@ -1,3 +1,3 @@
-import { DrawerController } from "./presentation/controller/DrawerController";
+import { UIDiagramController } from "./presentation/controller/UIDiagramController";
 
-DrawerController.instance;
+UIDiagramController.instance;

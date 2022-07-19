@@ -2,14 +2,20 @@ import { Diagram } from "../../domain/model/Diagram";
 import { FileRank } from "../../domain/model/FileRank";
 import { Kifu } from "../../domain/model/Kifu";
 import { PieceStand, PieceStands } from "../../domain/model/PieceStand";
-import { PlayerTypes } from "../../domain/value/Player";
+import { Player } from "../../domain/value/Player";
 import { ShogiBoard } from "../../domain/value/ShogiBoard";
-import { DiagramDrawer } from "../drawer/DiagramDrawer";
 import { ShogiBoardDrawer } from "../drawer/ShogiBoardDrawer";
 import { UIPieceStand, UIPieceStands } from "./UIPieceStand";
 import { UIShogiBoard } from "./UIShogiBoard";
-import { UISquare } from "./UISquare";
-import { UISquareInStand } from "./UISquareInStand";
+import { IUISquare, UISquare } from "./UISquare";
+
+type PieceStandSize = {
+  width: number;
+  height: number;
+  square_size: number;
+  board_stand_gap: number;
+  board_size: number;
+};
 
 export class UIDiagram {
   private _ui_shogi_board: UIShogiBoard;
@@ -17,25 +23,47 @@ export class UIDiagram {
   // UIShogiBoad はクラスではないので、UIDiagram で ShogiBoardDrawer を持つ
   private _shogi_board_drawer: ShogiBoardDrawer;
 
-  constructor(private _diagram: Diagram, private _kifu: Kifu) {
-    this._ui_piece_stands = this.create_ui_piece_stands(_diagram.piece_stands);
-    this._ui_shogi_board = this.create_ui_shogi_board(_diagram.shogi_board);
+  private _selected_ui_square: IUISquare | null = null;
 
-    // drawer
-    const square_size = DiagramDrawer.square_size;
-    const board_stand_gap = DiagramDrawer.board_stand_gap
-    const piece_stand_size: { width: number; height: number } = {
-      width: square_size * 2,
-      height: square_size * 4,
-    };
+  constructor(private _diagram: Diagram, private _kifu: Kifu) {
+    const square_size = ShogiBoardDrawer.square_size;
+    const piece_stand_width = square_size * 2;
+    const piece_stand_height = square_size * 4;
+    const board_stand_gap = ShogiBoardDrawer.board_stand_gap;
+    const drawer_x = piece_stand_width + board_stand_gap;
+    const drawer_y = 0;
+    // background drawer
     this._shogi_board_drawer = new ShogiBoardDrawer(
-      this._ui_shogi_board,
-      piece_stand_size.width + board_stand_gap,
-      0,
+      drawer_x,
+      drawer_y,
       square_size
+    );
+    // model
+    this._ui_shogi_board = this.create_ui_shogi_board(
+      _diagram.shogi_board,
+      drawer_x,
+      drawer_y,
+      square_size
+    );
+    const piece_stand_size: PieceStandSize = {
+      width: piece_stand_width,
+      height: piece_stand_height,
+      square_size,
+      board_stand_gap,
+      board_size: this._shogi_board_drawer.width,
+    };
+    // child model
+    this._ui_piece_stands = this.create_ui_piece_stands(
+      _diagram.piece_stands,
+      piece_stand_size
     );
 
     this.update();
+  }
+
+  get st() {
+    console.log(this.selected_ui_square);
+    return null;
   }
 
   get value() {
@@ -50,44 +78,42 @@ export class UIDiagram {
     return this._ui_piece_stands;
   }
 
-  get selected_ui_square(): UISquare | UISquareInStand | null {
-    let selected_square = null;
-    // shogi_board
-    FileRank.map( (file, rank) => {
-      const square = this._ui_shogi_board[file][rank];
-      if (square.is_selected) {
-        selected_square = square;
-      }
-    });
-    if (selected_square){
-      return selected_square;
-    }
-    // piece stands
-    for (let player_type of PlayerTypes) {
-      const ui_piece_stand = this._ui_piece_stands.get(player_type) as UIPieceStand;
-      if (ui_piece_stand.selected_ui_square_in_stand) {
-        return ui_piece_stand.selected_ui_square_in_stand;
-      }
-    }
-    return null;
+  get selected_ui_square(): IUISquare | null {
+    return this._selected_ui_square?.is_selected
+      ? this._selected_ui_square
+      : null;
+  }
+
+  public focus_any_square(ui_square: IUISquare) {
+    this._selected_ui_square?.unselect();
+    ui_square.select();
+    this._selected_ui_square = ui_square;
+  }
+
+  public unfocus_any_square() {
+    this._selected_ui_square?.unselect();
+    this._selected_ui_square = null;
   }
 
   public update() {
     this._update_model();
     this._update_drawer();
+    this._update_child_model();
   }
 
-  private _update_model() {
-    this._set_last_move_to();
-    this._ui_piece_stands.forEach((ui_piece_stand) =>
-      ui_piece_stand.update()
-    );
-  }
+  private _update_model() {}
 
   private _update_drawer() {
     this._shogi_board_drawer.update();
   }
 
+  private _update_child_model() {
+    this._set_last_move_to();
+    FileRank.map((file, rank) => {
+      this._ui_shogi_board[file][rank].update();
+    });
+    this._ui_piece_stands.forEach((ui_piece_stand) => ui_piece_stand.update());
+  }
 
   // public update() {
   //   const last_move = this._kifu.last_move;
@@ -100,27 +126,69 @@ export class UIDiagram {
   //   }
   // }
 
-  private create_ui_shogi_board(shogi_board: ShogiBoard): UIShogiBoard {
+  private create_ui_shogi_board(
+    shogi_board: ShogiBoard,
+    container_x: number,
+    container_y: number,
+    square_size: number
+  ): UIShogiBoard {
     const ui_shogi_board: UIShogiBoard = {};
     // init
     FileRank.numbers.map((file) => {
       ui_shogi_board[file] = {};
     });
     FileRank.map((file, rank) => {
-      const ui_square = new UISquare(shogi_board[file][rank]);
+      const x = container_x + square_size * (10 - file);
+      const y = container_y + square_size * rank;
+      // const ui_square: UISquare = ui_shogi_board[file][rank];
+      const ui_square = new UISquare(
+        shogi_board[file][rank],
+        x,
+        y,
+        square_size,
+        square_size
+      );
       ui_shogi_board[file][rank] = ui_square;
     });
     return ui_shogi_board;
   }
 
-  private create_ui_piece_stands(piece_stands: PieceStands): UIPieceStands {
+  private create_ui_piece_stands(
+    piece_stands: PieceStands,
+    piece_stand_size: PieceStandSize
+  ): UIPieceStands {
     const ui_piece_stands: UIPieceStands = new Map();
-    PlayerTypes.map((player_type) => {
-      ui_piece_stands.set(
-        player_type,
-        new UIPieceStand(piece_stands.get(player_type) as PieceStand)
-      );
-    });
+    // PlayerTypes.map((player_type) => {
+    //   ui_piece_stands.set(
+    //     player_type,
+    //     new UIPieceStand(piece_stands.get(player_type) as PieceStand)
+    //   );
+    // });
+
+    // Gote
+    const gote_ui_piece_stand = new UIPieceStand(
+      piece_stands.get(Player.Gote) as PieceStand,
+      0,
+      0,
+      piece_stand_size.width,
+      piece_stand_size.height,
+      piece_stand_size.square_size
+    );
+    ui_piece_stands.set(Player.Gote, gote_ui_piece_stand);
+    // Sente
+    const sente_ui_piece_stand = new UIPieceStand(
+      piece_stands.get(Player.Sente) as PieceStand,
+      piece_stand_size.width +
+        piece_stand_size.board_stand_gap +
+        piece_stand_size.board_size +
+        piece_stand_size.board_stand_gap,
+      piece_stand_size.board_size - piece_stand_size.height,
+      piece_stand_size.width,
+      piece_stand_size.height,
+      piece_stand_size.square_size
+    );
+    ui_piece_stands.set(Player.Sente, sente_ui_piece_stand);
+
     return ui_piece_stands;
   }
 
