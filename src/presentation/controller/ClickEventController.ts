@@ -1,4 +1,5 @@
 import { MoveFactory, MoveOption } from "../../domain/service/MoveFactory";
+import { DiagramDrawer } from "../drawer/DiagramDrawer";
 // import { SquarePosition } from "../../domain/value/SquarePosition";
 import { ISquareDrawer, SquareDrawer } from "../drawer/SquareDrawer";
 import { DrawerController } from "./DrawerController";
@@ -6,8 +7,9 @@ import { GameController } from "./GameController";
 
 export class ClickEventController {
   private static _instance: ClickEventController;
+  // private static _selected_square_drawer: ISquareDrawer | null;
 
-  private static _selected_square_drawer: ISquareDrawer | null;
+  private _diagram_drawer: DiagramDrawer = DrawerController.diagram_drawer;
 
   private constructor() {}
 
@@ -19,12 +21,15 @@ export class ClickEventController {
     return this._instance;
   }
 
+  // static get _selected_square_drawer(): ISquareDrawer {
+  //   return DrawerController.diagram_drawer.selected_square_drawer;
+  // }
+
   public click_square(target_drawer: ISquareDrawer) {
-    const selected_drawer = ClickEventController._selected_square_drawer;
-    if (selected_drawer) {
-      selected_drawer.unfocus();
-      ClickEventController._selected_square_drawer = null;
-    }
+    console.time("selected_drawer")
+    const selected_drawer = this._diagram_drawer.selected_square_drawer;
+    console.timeEnd("selected_drawer")
+    // 将棋盤の上の駒を移動する
     if (
       selected_drawer &&
       target_drawer instanceof SquareDrawer &&
@@ -42,12 +47,20 @@ export class ClickEventController {
       );
       console.dir(move);
       GameController.game.add_move(move);
+      console.time("update_diagram_drawer")
       DrawerController.instance.update();
-      ClickEventController._selected_square_drawer = null;
+      console.timeEnd("update_diagram_drawer")
+      // ClickEventController._selected_square_drawer = null;
     } else {
-      if (target_drawer.focus()) {
-        ClickEventController._selected_square_drawer = target_drawer;
-      }
+      this._diagram_drawer.focus_any_square(target_drawer);
+      // if (target_drawer.focus()) {
+      //   ClickEventController._selected_square_drawer = target_drawer;
+      // }
+    }
+    // 適切な駒の移動がなかった場合の処理
+    if (selected_drawer) {
+      selected_drawer.unfocus();
+      this._diagram_drawer.focus_any_square(target_drawer);
     }
   }
 

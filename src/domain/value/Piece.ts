@@ -1,5 +1,5 @@
 import { PieceStand } from "../model/PieceStand";
-import { Player, PlayerType } from "./Player";
+import { PlayerType } from "./Player";
 import { Square } from "./Square";
 
 // for player data
@@ -82,12 +82,8 @@ export class Piece {
     return this._master;
   }
 
-  public be_taken(): void {
-    const swap_player_type = {
-      [Player.Sente]: Player.Gote,
-      [Player.Gote]: Player.Sente,
-    };
-    this._master = swap_player_type[this._master];
+  public be_taken_by(player_type: PlayerType) {
+    this._master = player_type;
   }
 
   public equals(piece: Piece): boolean {

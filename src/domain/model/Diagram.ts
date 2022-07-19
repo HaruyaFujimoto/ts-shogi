@@ -66,10 +66,10 @@ export class Diagram {
     console.dir(target_position_piece);
     // 移動先に駒が居たら場合
     if (target_position_piece) {
-      // 駒が取られる (駒の所有者の変更)
-      target_position_piece.be_taken();
-      // 駒台に駒を増やす
       const player: PlayerType = move.piece.master;
+      // 駒が取られる (駒の所有者の変更)
+      target_position_piece.be_taken_by(player);
+      // 駒台に駒を増やす
       const piece_stand = this._piece_stands.get(player) as PieceStand;
       piece_stand.take_piece(target_position_piece);
     }

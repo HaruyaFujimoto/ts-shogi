@@ -19,9 +19,9 @@ test("Piece type, promotable test", () => {
 test("Piece be taken test, then change master", () => {
   const p = new Piece("Pawn", Player.Sente, false);
   expect(p.master).toBe(Player.Sente);
-  p.be_taken();
+  p.be_taken_by(Player.Gote);
   expect(p.master).toBe(Player.Gote);
-  p.be_taken();
+  p.be_taken_by(Player.Sente);
   expect(p.master).toBe(Player.Sente);
 });
 

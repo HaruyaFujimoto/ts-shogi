@@ -1,5 +1,6 @@
 import * as PIXI from "pixi.js";
 import { FileRank } from "../../domain/model/FileRank";
+import { FileRankPair } from "../../domain/value/FileRankNumber";
 import { UIShogiBoard } from "../model/UIShogiBoard";
 import { UISquare } from "../model/UISquare";
 import { create_pixi_container } from "../PIXIApplication";
@@ -37,6 +38,18 @@ export class ShogiBoardDrawer {
 
   get square_containers(): SquareDrawers {
     return this._square_drawers;
+  }
+
+  get selected_square_drawer(): SquareDrawer | null {
+    const file_rank_pair: FileRankPair | null = FileRank.find( (file, rank) => {
+      return this._ui_shogi_board[file][rank].is_selected
+    });
+    if (file_rank_pair) {
+      const file = file_rank_pair[0];
+      const rank = file_rank_pair[1];
+      return this._square_drawers[file][rank];
+    }
+    return null;
   }
 
   public update(): void {

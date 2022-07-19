@@ -31,6 +31,7 @@ export class PieceStandDrawer {
     // this._ui_piece_stand.value.take_piece(new Piece("Gold", this._ui_piece_stand.value.master));
     // this._ui_piece_stand.value.take_piece(new Piece("Bishop", this._ui_piece_stand.value.master));
     // this._ui_piece_stand.value.take_piece(new Piece("Rook", this._ui_piece_stand.value.master));
+
     // stand
     this._container = create_pixi_container(x, y, width, height);
     this._sprite = this._add_sprite(this._container, width, height);
@@ -38,11 +39,21 @@ export class PieceStandDrawer {
     // pieces
     // this.piece_containers = this.create_pieces_contaners(square_size);
     this._square_in_stand_drawers = this._create_square_in_stand_drawers(
-      this._ui_piece_stand.value.master,
+      this._ui_piece_stand,
       square_size,
       this._container
     );
     // this.draw_pieces(this._ui_piece_stand.value, this.piece_containers);
+  }
+
+  get selected_square_in_stand_drawer(): SquareInStandDrawer | null {
+    for (let square_in_stand_drawer of this._square_in_stand_drawers) {
+      const ui_square_in_stand = square_in_stand_drawer.ui_square_in_stand;
+      if (ui_square_in_stand.is_selected) {
+        return square_in_stand_drawer;
+      }
+    }
+    return null;
   }
 
   public update() {
@@ -53,12 +64,13 @@ export class PieceStandDrawer {
   }
 
   private _create_square_in_stand_drawers(
-    player_type: PlayerType,
+    ui_piece_stand: UIPieceStand,
     square_size: number,
     container: PIXI.Container
   ) {
     // const containers: PieceContainers = {};
-    const piece_array = [
+    const square_in_stand_drawers: SquareInStandDrawer[] = [];
+    const piece_array: (PieceType | "")[] = [
       "Pawn",
       "",
       "Lance",
@@ -68,14 +80,12 @@ export class PieceStandDrawer {
       "Bishop",
       "Rook",
     ];
-    if (player_type == Player.Gote) {
+    if (ui_piece_stand.value.master == Player.Gote) {
       piece_array.reverse();
     }
-    const square_in_stand_drawers: SquareInStandDrawer[] = [];
-    piece_array.map((piece_type, index) => {
-      if (!piece_type) {
-        return;
-      }
+    // main
+    ui_piece_stand.ui_square_in_stand_list.map( (ui_square_in_stand) => {
+      const index = piece_array.indexOf(ui_square_in_stand.piece_type);
       const x = container.x + square_size * (index % 2);
       const y = container.y + square_size * Math.floor(index / 2);
       const width = square_size;
@@ -85,8 +95,8 @@ export class PieceStandDrawer {
       // containers[piece_type] = container;
       // new
       const square_in_stand_drawer = new SquareInStandDrawer(
-        this._ui_piece_stand,
-        piece_type as PieceType,
+        ui_piece_stand,
+        ui_square_in_stand,
         x,
         y,
         width,
@@ -95,7 +105,6 @@ export class PieceStandDrawer {
       square_in_stand_drawers.push(square_in_stand_drawer);
     });
     return square_in_stand_drawers;
-    // return containers;
   }
 
   private _add_sprite(

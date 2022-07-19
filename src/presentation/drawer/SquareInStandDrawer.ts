@@ -1,6 +1,6 @@
 import * as PIXI from "pixi.js";
 import { PieceStand } from "../../domain/model/PieceStand";
-import { Piece, PieceType } from "../../domain/value/Piece";
+import { Piece } from "../../domain/value/Piece";
 import { ClickEventController } from "../controller/ClickEventController";
 import { GameController } from "../controller/GameController";
 import { UISquareInStand } from "../model/UISquareInStand";
@@ -23,19 +23,19 @@ export class SquareInStandDrawer implements ISquareDrawer {
   private _sprite: PIXI.Sprite;
   private _graphic: PIXI.Graphics;
   private _square_status: "normal" | "selected" | "last_move_to" = "normal";
-  private _ui_square_in_stand: UISquareInStand;
   constructor(
     private _ui_piece_stand: UIPieceStand,
-    piece_type: PieceType,
+    private _ui_square_in_stand: UISquareInStand,
+    // piece_type: PieceType,
     x: number,
     y: number,
     width: number,
     height: number
   ) {
-    this._ui_square_in_stand = new UISquareInStand(
-      this._ui_piece_stand,
-      piece_type
-    );
+    // this._ui_square_in_stand = new UISquareInStand(
+    //   this._ui_piece_stand,
+    //   piece_type
+    // );
     this._container = create_pixi_container(x, y, width, height);
     this._sprite = this._add_sprite_into_container(
       this._container,
@@ -57,6 +57,10 @@ export class SquareInStandDrawer implements ISquareDrawer {
 
   get piece(): Piece {
     return this._ui_square_in_stand.piece;
+  }
+
+  get ui_square_in_stand(): UISquareInStand {
+    return this._ui_square_in_stand;
   }
 
   public update() {

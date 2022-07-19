@@ -5,7 +5,7 @@ import { IUISquare } from "./UISquare";
 export class UISquareInStand implements IUISquare {
   private _is_selected: boolean = false;
   constructor(
-    private _ui_piece_stand: UIPieceStand,
+    private _ui_piece_stand: UIPieceStand,  // 駒の枚数を数えるために必要
     private _piece_type: PieceType
   ) // private _number: number
   {}
@@ -16,6 +16,10 @@ export class UISquareInStand implements IUISquare {
 
   get piece(): Piece {
     return this._ui_piece_stand.value.get_piece(this._piece_type);
+  }
+
+  get piece_type(): PieceType{
+    return this._piece_type;
   }
 
   get number(): number {

@@ -10,13 +10,14 @@ export class DrawerController {
   private _diagram: Diagram = GameController.instance.game.diagram;
   private _kifu: Kifu = GameController.instance.game.kifu;
   private _diagram_drawer: DiagramDrawer;
+  private _ui_diagram: UIDiagram;
 
   private constructor() {
-    const ui_diagram = new UIDiagram(this._diagram, this._kifu);
-    this._diagram_drawer = new DiagramDrawer(ui_diagram);
+    this._ui_diagram = new UIDiagram(this._diagram, this._kifu);
+    this._diagram_drawer = new DiagramDrawer(this._ui_diagram);
   }
 
-  static get instance() {
+  static get instance(): DrawerController {
     if (this._instance) {
       return this._instance;
     }
@@ -24,7 +25,15 @@ export class DrawerController {
     return this._instance;
   }
 
-  public update() {
+  static get ui_diagram(): UIDiagram {
+    return DrawerController.instance._ui_diagram;
+  }
+
+  static get diagram_drawer(): DiagramDrawer {
+    return DrawerController.instance._diagram_drawer;
+  }
+
+  public update(): void {
     console.log(this._diagram.diagram_to_string());
     this._diagram_drawer.update();
   }
