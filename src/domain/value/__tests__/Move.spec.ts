@@ -3,8 +3,8 @@ import { MoveFactory } from "../../service/MoveFactory";
 import { Move } from "../Move";
 
 test("Move test", () => {
-  const diagram = new DiagramFactory().default_diagram();
-  const move: Move = new MoveFactory().create_move(diagram, {
+  const diagram = DiagramFactory.factory();
+  const move: Move = MoveFactory.create_move_from_pair(diagram, {
     from: [7, 7],
     to: [7, 6],
     promotion: false,

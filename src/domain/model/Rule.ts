@@ -9,7 +9,7 @@ export type PiecesInShogiBoardAsArray = (Piece | null)[][];
 
 export class Rule {
   // [file][rank]: piece
-  static readonly InitialPiecePosition: PiecesInShogiBoardAsArray = [
+  static readonly InitialPieceMoveFrom: PiecesInShogiBoardAsArray = [
     [
       // file 1
       new Piece("Lance", "Gote"),

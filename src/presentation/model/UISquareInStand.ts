@@ -4,6 +4,7 @@ import { GameController } from "../controller/GameController";
 import { SquareInStandDrawer } from "../drawer/SquareInStandDrawer";
 import { UIPieceStand } from "./UIPieceStand";
 import { IUISquare } from "./UISquare";
+import { UIEvent } from "../service/UIEvent";
 
 export class UISquareInStand implements IUISquare {
   private _is_selected: boolean = false;
@@ -17,6 +18,7 @@ export class UISquareInStand implements IUISquare {
     height: number // private _number: number
   ) {
     this._drawer = this._create_drawer(this, x, y, width, height);
+    this._register_click_event(() => { UIEvent.click_square(this)})
   }
 
   get ui_piece_stand() {
@@ -27,6 +29,10 @@ export class UISquareInStand implements IUISquare {
     return this._ui_piece_stand.value.get_piece(this._piece_type);
   }
 
+  get has_piece(): boolean {
+    return this.number > 0;
+  }
+
   get piece_type(): PieceType {
     return this._piece_type;
   }
@@ -35,7 +41,7 @@ export class UISquareInStand implements IUISquare {
     return this._ui_piece_stand.value.pieces[this._piece_type];
   }
 
-  get position(): PieceStand {
+  get from(): PieceStand {
     return this._ui_piece_stand.value;
   }
 
@@ -44,7 +50,7 @@ export class UISquareInStand implements IUISquare {
   }
 
   public select() {
-    if (this.piece && GameController.game.turn == this.piece.master) {
+    if (this.has_piece && GameController.game.turn == this.piece.master) {
       this._is_selected = true;
       this._drawer.update_square_graphic();
       return true;
@@ -60,6 +66,10 @@ export class UISquareInStand implements IUISquare {
   public update() {
     this._update_model();
     this._update_drawer();
+  }
+
+  private _register_click_event(func: ()=>any) {
+    this._drawer.register_click_event(func);
   }
 
   private _update_model() {}

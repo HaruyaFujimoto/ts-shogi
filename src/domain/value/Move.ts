@@ -1,11 +1,11 @@
 import { PieceStand } from "../model/PieceStand";
-import { Piece, PiecePosition } from "./Piece";
+import { Piece, PieceMoveFrom } from "./Piece";
 import { Square } from "./Square";
 
 export class Move {
   public readonly piece: Piece;
   constructor(
-    public readonly from: PiecePosition,
+    public readonly from: PieceMoveFrom,
     public readonly to: Square,
     public readonly promotion: boolean,
     piece?: Piece

@@ -1,5 +1,4 @@
 import * as PIXI from "pixi.js";
-import { ClickEventController } from "../controller/ClickEventController";
 import { UISquareInStand } from "../model/UISquareInStand";
 import { create_pixi_container } from "../PIXIApplication";
 import { PieceDrawer } from "./PieceDrawer";
@@ -12,7 +11,7 @@ export class SquareInStandDrawer {
 
   private _sprite: PIXI.Sprite;
   private _graphic: PIXI.Graphics;
-  private _square_status: "normal" | "selected" | "last_move_to" = "normal";
+  // private _square_status: "normal" | "selected" | "last_move_to" = "normal";
   constructor(
     private _ui_square_in_stand: UISquareInStand,
     x: number,
@@ -36,7 +35,6 @@ export class SquareInStandDrawer {
     //
     this._piece_drawer = this._create_piece_drawer(this._container);
     this.update_piece_drawer();
-    this._attatch_click_event(this._sprite);
   }
 
   public update() {
@@ -47,6 +45,11 @@ export class SquareInStandDrawer {
   public unfocus() {
     this._ui_square_in_stand.unselect();
     this.update_square_graphic();
+  }
+
+  public register_click_event(func: ()=>any) {
+    const sprite = this._sprite;
+    sprite.on("click", func);
   }
 
   private _create_piece_drawer(container: PIXI.Container) {
@@ -108,24 +111,4 @@ export class SquareInStandDrawer {
     return graphic;
   }
 
-  private _attatch_click_event(sprite: PIXI.Sprite) {
-    sprite.on("click", () => {
-      // console.log(this._sprite.position);
-      const skip_condition =
-        this._ui_square_in_stand.number == 0 ||
-        this._square_status == "selected";
-      if (skip_condition) {
-        return;
-      }
-      ClickEventController.instance.click_square(this._ui_square_in_stand);
-      // this._square_status = "selected";
-      // this.update_square_graphic();
-      // const last_selected = SquareDrawer.last_selected_instance;
-      // if (last_selected) {
-      //   last_selected.square_status = "normal";
-      //   last_selected.update_square_graphic();
-      // }
-      // SquareDrawer.last_selected_instance = this;
-    });
-  }
 }

@@ -3,7 +3,7 @@ import { PlayerType } from "./Player";
 import { Square } from "./Square";
 
 // for player data
-export type PiecePosition = Square | PieceStand;
+export type PieceMoveFrom = Square | PieceStand;
 
 // define types
 export const PieceTypes = [

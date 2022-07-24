@@ -1,10 +1,11 @@
-import { Piece, PiecePosition } from "../../domain/value/Piece";
+import { PieceMoveFrom } from "../../domain/value/Piece";
 import { Square } from "../../domain/value/Square";
 import { GameController } from "../controller/GameController";
 import { SquareDrawer } from "../drawer/SquareDrawer";
+import { UIEvent } from "../service/UIEvent";
 
 export interface IUISquare {
-  position: PiecePosition;
+  from: PieceMoveFrom;
   is_selected: boolean;
   select: () => void;
   unselect: () => void;
@@ -25,6 +26,7 @@ export class UISquare implements IUISquare {
     height: number
   ) {
     this._drawer = this._create_drawer(this, x, y, width, height);
+    this._register_click_event(() => { UIEvent.click_square(this)})
   }
 
   // get value(): Square {
@@ -39,16 +41,24 @@ export class UISquare implements IUISquare {
     return this._is_last_move_to;
   }
 
-  get piece(): Piece | null {
-    return this._value._piece;
+  // get piece(): Piece | null {
+  //   return this._value._piece;
+  // }
+
+  get from(): Square {
+    return this._value;
   }
 
-  get position(): Square {
+  get value(): Square {
     return this._value;
   }
 
   public update() {
     this._update_drawer();
+  }
+
+  private _register_click_event(func: ()=>any) {
+    this._drawer.register_click_event(func);
   }
 
   private _update_drawer() {

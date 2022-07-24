@@ -13,7 +13,7 @@ export class GameProgress {
 
   constructor() {
     // create ShogiBoard and PieceStands
-    this._diagram = new DiagramFactory().default_diagram();
+    this._diagram = DiagramFactory.factory();
     // create Players and Turn
     this._kifu = new Kifu(this._diagram);
     this._add_move_as_pair([7, 7], [7, 6]);
@@ -44,7 +44,7 @@ export class GameProgress {
     to: FileRankPair,
     promotion = false
   ) {
-    const move: Move = new MoveFactory().create_move(this._diagram, {
+    const move: Move = MoveFactory.create_move_from_pair(this._diagram, {
       from: from,
       to: to,
       promotion: promotion,

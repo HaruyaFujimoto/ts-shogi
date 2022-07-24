@@ -27,6 +27,7 @@ export class UIPieceStand {
       square_size
     );
 
+    // for test
     this.value.take_piece(new Piece("Pawn", this.value.master));
     this.value.take_piece(new Piece("Lance", this.value.master));
     this.value.take_piece(new Piece("kNight", this.value.master));

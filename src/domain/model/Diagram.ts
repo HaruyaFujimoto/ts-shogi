@@ -1,7 +1,7 @@
 import { ShogiBoard } from "../value/ShogiBoard";
 import { PieceStand, PieceStands } from "./PieceStand";
 import { Move } from "../value/Move";
-import { Piece, PiecePosition } from "../value/Piece";
+import { Piece, PieceMoveFrom } from "../value/Piece";
 import { Player, PlayerType } from "../value/Player";
 import { Turn } from "../value/Turn";
 import { Square } from "../value/Square";
@@ -82,7 +82,7 @@ export class Diagram {
   }
 
   private _put_piece_into_square_position(
-    from: PiecePosition,
+    from: PieceMoveFrom,
     to: Square,
     piece: Piece
   ): Piece | null {

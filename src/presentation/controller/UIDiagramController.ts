@@ -1,6 +1,7 @@
 import { Diagram } from "../../domain/model/Diagram";
 import { Kifu } from "../../domain/model/Kifu";
 import { UIDiagram } from "../model/UIDiagram";
+import { UIDiagramFactory } from "../service/UIDiagramFactory";
 import { GameController } from "./GameController";
 
 export class UIDiagramController {
@@ -11,7 +12,7 @@ export class UIDiagramController {
   private _ui_diagram: UIDiagram;
 
   private constructor() {
-    this._ui_diagram = new UIDiagram(this._diagram, this._kifu);
+    this._ui_diagram = UIDiagramFactory.factory(this._diagram, this._kifu);
   }
 
   static get instance(): UIDiagramController {

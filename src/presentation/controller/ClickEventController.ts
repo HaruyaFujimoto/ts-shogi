@@ -1,4 +1,4 @@
-import { MoveFactory, MoveOption } from "../../domain/service/MoveFactory";
+import { MoveFactory, MoveOptionAsPair } from "../../domain/service/MoveFactory";
 // import { SquarePosition } from "../../domain/value/SquarePosition";
 import { UIDiagram } from "../model/UIDiagram";
 import { IUISquare, UISquare } from "../model/UISquare";
@@ -35,12 +35,12 @@ export class ClickEventController {
       selected_ui_square instanceof UISquare
     ) {
       // ここに移動先として正しいかを判定するロジック
-      const move_option: MoveOption = {
-        from: selected_ui_square.position.position.pair,
-        to: target_square.position.position.pair,
+      const move_option: MoveOptionAsPair = {
+        from: selected_ui_square.value.position.pair,
+        to: target_square.value.position.pair,
         promotion: false,
       };
-      const move = new MoveFactory().create_move(
+      const move = MoveFactory.create_move_from_pair(
         GameController.game.diagram,
         move_option
       );
