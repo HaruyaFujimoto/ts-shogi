@@ -11,5 +11,6 @@ module.exports = {
   testEnvironment: 'node',
   transform: {
     "^.+\\.tsx?$": "esbuild-jest"
-  }
+  },
+  testMatch: ["**/__tests__/**/*.spec.ts"],
 };

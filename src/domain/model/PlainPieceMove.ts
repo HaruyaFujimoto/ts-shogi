@@ -1,21 +1,17 @@
 import { SquarePosition } from "../value/SquarePosition";
-// import { Diagram } from "../value/Diagram";
 import { PieceType } from "../value/Piece";
 import {
   PieceMoveArea,
   King,
-  Rook,
-  Bishop,
   Gold,
   Silver,
-  kNight,
-  Lance,
   Pawn,
 } from "../value/PieceClassMoves";
 import { FileRankNumber } from "../value/FileRankNumber";
 import { FileRank } from "./FileRank";
+import { Player, PlayerType } from "../value/Player";
 
-export class PieceMove {
+export class PlainPieceMove {
   static readonly OneSquareMoveArea: { [key: string]: PieceMoveArea[] } = {
     King,
     Gold,
@@ -23,26 +19,27 @@ export class PieceMove {
     Pawn,
   };
 
-  static readonly LongRangeDestination: { [key: string]: PieceMoveArea[] } = {
-    Rook,
-    Bishop,
-    Lance,
-  };
+  // static readonly LongRangeDestination: { [key: string]: PieceMoveArea[] } = {
+  //   Rook,
+  //   Bishop,
+  //   Lance,
+  // };
 
-  static readonly kNight = {
-    kNight,
-  };
+  // static readonly kNight = {
+  //   kNight,
+  // };
 
   static getFileRankFromNumber(number: PieceMoveArea): number[] {
     const number_file_rank_map = {
-      1: [1, -1],
-      2: [0, -1],
-      3: [-1, -1],
-      4: [1, 0],
-      6: [-1, 0],
-      7: [1, 1],
-      8: [0, 1],
-      9: [-1, 1],
+      9: [-1, -1],
+      6: [-1,  0],
+      3: [-1,  1],
+      8: [ 0, -1],
+      2: [ 0,  1],
+      // 5: [],
+      7: [ 1, -1],
+      4: [ 1,  0],
+      1: [ 1,  1],
     };
     return number_file_rank_map[number];
   }
@@ -50,16 +47,16 @@ export class PieceMove {
   constructor(
     private _piece_type: PieceType,
     private current_position: SquarePosition,
-    // private _diagram: Diagram,
+    private _piece_master: PlayerType,
   ) {}
 
   //
   public getCanMoveArea(): SquarePosition[] {
     const is_one_square_piece = Object.keys(
-      PieceMove.OneSquareMoveArea
+      PlainPieceMove.OneSquareMoveArea
     ).includes(this._piece_type);
     if (is_one_square_piece) {
-      return this._getSquarePotisionForOneSquare(this._piece_type, this.current_position);
+      return this._getSquarePotisionForOneSquare(this._piece_type, this._piece_master, this.current_position);
     }
     if (this._piece_type == "Rook") {
       return this._getSquarePotisionForRook(this.current_position);
@@ -68,24 +65,29 @@ export class PieceMove {
       return this._getSquarePotisionForBishop(this.current_position);
     }
     if (this._piece_type == "Lance") {
-      return this._getSquarePotisionForLance(this.current_position);
+      return this._getSquarePotisionForLance(this.current_position, this._piece_master);
     }
     if (this._piece_type == "kNight") {
-      return this._getSquarePotisionForkNight(this.current_position);
+      return this._getSquarePotisionForkNight(this.current_position, this._piece_master);
     }
     return [];
   }
 
-  private _getSquarePotisionForOneSquare(piece_type: PieceType, current_position: SquarePosition): SquarePosition[] {
+  private _getSquarePotisionForOneSquare(piece_type: PieceType, piece_master: PlayerType, current_position: SquarePosition): SquarePosition[] {
     // specific piece props
     const specific_piece_can_move_area =
-      PieceMove.OneSquareMoveArea[piece_type];
+      piece_master == Player.Sente ?
+        PlainPieceMove.OneSquareMoveArea[piece_type]:
+        PlainPieceMove.OneSquareMoveArea[piece_type].map((area) => {
+          return (10 - area) as PieceMoveArea; // 後手番の時、移動可能範囲を上下左右逆にする
+        });
     const current_file = current_position.file;
     const current_rank = current_position.rank;
+
     // functions
     const piece_move_area_as_number = (number: PieceMoveArea): number[] => {
       const [file_destination, rank_destination] =
-        PieceMove.getFileRankFromNumber(number);
+        PlainPieceMove.getFileRankFromNumber(number);
       const file_as_number: number = current_file + file_destination;
       const rank_as_number: number = current_rank + rank_destination;
       // square_position_list.push(square_position);
@@ -174,18 +176,37 @@ export class PieceMove {
     return square_position_list;
   }
 
-  private _getSquarePotisionForLance(current_position: SquarePosition): SquarePosition[] {
+  private _getSquarePotisionForLance(current_position: SquarePosition, piece_master: PlayerType): SquarePosition[] {
     const square_position_list: SquarePosition[] = [];
     const current_file = current_position.file;
     const current_rank = current_position.rank;
-    return square_position_list;
+    FileRank.numbers.map( (rank) => {
+      square_position_list.push(new SquarePosition(current_file, rank));
+    });
+
+    return piece_master == Player.Sente ?
+      square_position_list.slice(0, current_rank - 1) :
+      square_position_list.slice(current_rank) ;
 
   }
 
-  private _getSquarePotisionForkNight(current_position: SquarePosition): SquarePosition[] {
+  private _getSquarePotisionForkNight(current_position: SquarePosition, piece_master: PlayerType): SquarePosition[] {
     const square_position_list: SquarePosition[] = [];
     const current_file = current_position.file;
     const current_rank = current_position.rank;
+    const target_file_pair = [
+      current_file - 1,
+      current_file + 1
+    ];
+    const target_rank = piece_master == Player.Sente ?
+      current_rank - 2 :
+      current_rank + 2;
+    target_file_pair.map( (target_file) => {
+      if (FileRank.is_in_file_rank_number(target_file, target_rank)) {
+        square_position_list.push(new SquarePosition(target_file as FileRankNumber, target_rank as FileRankNumber));
+      }
+    });
+
     return square_position_list;
 
   }
