@@ -17,7 +17,9 @@ export class DiagramFactory {
     return diagram;
   }
 
-  private static _deploy_pieces_into_shogi_board(piecess: PiecesInShogiBoardAsArray) {
+  private static _deploy_pieces_into_shogi_board(
+    piecess: PiecesInShogiBoardAsArray
+  ) {
     const shogi_board: ShogiBoard =
       new ShogiBoardFactory().create_shogi_board();
     piecess.map((pieces: (Piece | null)[], i) => {

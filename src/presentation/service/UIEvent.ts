@@ -1,4 +1,7 @@
-import { MoveOptionAsPair, MoveFactory } from "../../domain/service/MoveFactory";
+import {
+  MoveOptionAsPair,
+  MoveFactory,
+} from "../../domain/service/MoveFactory";
 import { GameController } from "../controller/GameController";
 import { UIDiagramController } from "../controller/UIDiagramController";
 import { IUISquare, UISquare } from "../model/UISquare";
@@ -13,13 +16,14 @@ export class UIEvent {
 
     // フォーカスされたマスがない場合、マスをフォーカスする
     const selected_ui_square: IUISquare | null = ui_diagram.selected_ui_square;
-    if (! selected_ui_square) {
+    if (!selected_ui_square) {
       ui_diagram.focus_any_square(target_square);
       return;
     }
 
     // 選択したマスが駒台にある場合、マスをフォーカスする
-    const is_target_square_piece_in_stand = target_square instanceof UISquareInStand;
+    const is_target_square_piece_in_stand =
+      target_square instanceof UISquareInStand;
     if (is_target_square_piece_in_stand) {
       ui_diagram.focus_any_square(target_square);
       return;
@@ -42,15 +46,16 @@ export class UIEvent {
     // !! 選択したマスに自分の駒がある場合は、上記の if 文に吸われる
     const condition_of_move_from_square =
       selected_ui_square instanceof UISquare &&
-      target_square instanceof UISquare
+      target_square instanceof UISquare;
     if (condition_of_move_from_square) {
       this._move_from_ui_square(selected_ui_square, target_square);
     }
   }
 
-
-  private static _move_from_ui_square(selected_ui_square: UISquare, target_square: UISquare) {
-
+  private static _move_from_ui_square(
+    selected_ui_square: UISquare,
+    target_square: UISquare
+  ) {
     // ここに移動先として正しいかを判定するロジック
     const move_option: MoveOptionAsPair = {
       from: selected_ui_square.value.position.pair,

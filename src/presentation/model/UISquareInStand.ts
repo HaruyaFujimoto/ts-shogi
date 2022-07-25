@@ -18,7 +18,9 @@ export class UISquareInStand implements IUISquare {
     height: number // private _number: number
   ) {
     this._drawer = this._create_drawer(this, x, y, width, height);
-    this._register_click_event(() => { UIEvent.click_square(this)})
+    this._register_click_event(() => {
+      UIEvent.click_square(this);
+    });
   }
 
   get ui_piece_stand() {
@@ -68,7 +70,7 @@ export class UISquareInStand implements IUISquare {
     this._update_drawer();
   }
 
-  private _register_click_event(func: ()=>any) {
+  private _register_click_event(func: () => any) {
     this._drawer.register_click_event(func);
   }
 

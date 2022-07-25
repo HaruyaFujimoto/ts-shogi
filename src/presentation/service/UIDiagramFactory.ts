@@ -10,7 +10,6 @@ import { UIPieceStand, UIPieceStands } from "../model/UIPieceStand";
 import { UIShogiBoard } from "../model/UIShogiBoard";
 import { UISquare } from "../model/UISquare";
 
-
 type PieceStandSize = {
   width: number;
   height: number;
@@ -18,7 +17,6 @@ type PieceStandSize = {
   board_stand_gap: number;
   board_size: number;
 };
-
 
 export class UIDiagramFactory {
   static factory(diagram: Diagram, kifu: Kifu) {
@@ -40,7 +38,7 @@ export class UIDiagramFactory {
       drawer_x,
       drawer_y,
       square_size
-      );
+    );
     const piece_stand_size: PieceStandSize = {
       width: piece_stand_width,
       height: piece_stand_height,
@@ -61,7 +59,6 @@ export class UIDiagramFactory {
       shogi_board_drawer
     );
   }
-
 
   private static _create_ui_shogi_board(
     shogi_board: ShogiBoard,

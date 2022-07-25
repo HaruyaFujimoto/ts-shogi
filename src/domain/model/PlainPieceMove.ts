@@ -32,14 +32,14 @@ export class PlainPieceMove {
   static getFileRankFromNumber(number: PieceMoveArea): number[] {
     const number_file_rank_map = {
       9: [-1, -1],
-      6: [-1,  0],
-      3: [-1,  1],
-      8: [ 0, -1],
-      2: [ 0,  1],
+      6: [-1, 0],
+      3: [-1, 1],
+      8: [0, -1],
+      2: [0, 1],
       // 5: [],
-      7: [ 1, -1],
-      4: [ 1,  0],
-      1: [ 1,  1],
+      7: [1, -1],
+      4: [1, 0],
+      1: [1, 1],
     };
     return number_file_rank_map[number];
   }
@@ -47,7 +47,7 @@ export class PlainPieceMove {
   constructor(
     private _piece_type: PieceType,
     private current_position: SquarePosition,
-    private _piece_master: PlayerType,
+    private _piece_master: PlayerType
   ) {}
 
   //
@@ -56,7 +56,11 @@ export class PlainPieceMove {
       PlainPieceMove.OneSquareMoveArea
     ).includes(this._piece_type);
     if (is_one_square_piece) {
-      return this._getSquarePotisionForOneSquare(this._piece_type, this._piece_master, this.current_position);
+      return this._getSquarePotisionForOneSquare(
+        this._piece_type,
+        this._piece_master,
+        this.current_position
+      );
     }
     if (this._piece_type == "Rook") {
       return this._getSquarePotisionForRook(this.current_position);
@@ -65,22 +69,32 @@ export class PlainPieceMove {
       return this._getSquarePotisionForBishop(this.current_position);
     }
     if (this._piece_type == "Lance") {
-      return this._getSquarePotisionForLance(this.current_position, this._piece_master);
+      return this._getSquarePotisionForLance(
+        this.current_position,
+        this._piece_master
+      );
     }
     if (this._piece_type == "kNight") {
-      return this._getSquarePotisionForkNight(this.current_position, this._piece_master);
+      return this._getSquarePotisionForkNight(
+        this.current_position,
+        this._piece_master
+      );
     }
     return [];
   }
 
-  private _getSquarePotisionForOneSquare(piece_type: PieceType, piece_master: PlayerType, current_position: SquarePosition): SquarePosition[] {
+  private _getSquarePotisionForOneSquare(
+    piece_type: PieceType,
+    piece_master: PlayerType,
+    current_position: SquarePosition
+  ): SquarePosition[] {
     // specific piece props
     const specific_piece_can_move_area =
-      piece_master == Player.Sente ?
-        PlainPieceMove.OneSquareMoveArea[piece_type]:
-        PlainPieceMove.OneSquareMoveArea[piece_type].map((area) => {
-          return (10 - area) as PieceMoveArea; // 後手番の時、移動可能範囲を上下左右逆にする
-        });
+      piece_master == Player.Sente
+        ? PlainPieceMove.OneSquareMoveArea[piece_type]
+        : PlainPieceMove.OneSquareMoveArea[piece_type].map((area) => {
+            return (10 - area) as PieceMoveArea; // 後手番の時、移動可能範囲を上下左右逆にする
+          });
     const current_file = current_position.file;
     const current_rank = current_position.rank;
 
@@ -120,18 +134,20 @@ export class PlainPieceMove {
     return square_position_list;
   }
 
-  private _getSquarePotisionForRook(current_position: SquarePosition): SquarePosition[] {
+  private _getSquarePotisionForRook(
+    current_position: SquarePosition
+  ): SquarePosition[] {
     const square_position_list: SquarePosition[] = [];
     const current_file = current_position.file;
     const current_rank = current_position.rank;
     // 縦の移動範囲
-    FileRank.numbers.map( (rank) => {
+    FileRank.numbers.map((rank) => {
       if (rank != current_rank) {
         square_position_list.push(new SquarePosition(current_file, rank));
       }
     });
     // 横の移動範囲
-    FileRank.numbers.map( (file) => {
+    FileRank.numbers.map((file) => {
       if (file != current_file) {
         square_position_list.push(new SquarePosition(file, current_rank));
       }
@@ -139,36 +155,69 @@ export class PlainPieceMove {
     return square_position_list;
   }
 
-  private _getSquarePotisionForBishop(current_position: SquarePosition): SquarePosition[] {
+  private _getSquarePotisionForBishop(
+    current_position: SquarePosition
+  ): SquarePosition[] {
     const square_position_list: SquarePosition[] = [];
     const current_file = current_position.file;
     const current_rank = current_position.rank;
     // 右上から左下への移動範囲
-    let base_file_as_slash = current_file - Math.min(current_file, current_rank) + 1;
-    let base_rank_as_slash = current_rank - Math.min(current_file, current_rank) + 1;
+    let base_file_as_slash =
+      current_file - Math.min(current_file, current_rank) + 1;
+    let base_rank_as_slash =
+      current_rank - Math.min(current_file, current_rank) + 1;
     if (base_file_as_slash != current_file) {
-      square_position_list.push(new SquarePosition(base_file_as_slash as FileRankNumber, base_rank_as_slash as FileRankNumber));
+      square_position_list.push(
+        new SquarePosition(
+          base_file_as_slash as FileRankNumber,
+          base_rank_as_slash as FileRankNumber
+        )
+      );
     }
     base_file_as_slash += 1;
     base_rank_as_slash += 1;
-    while (FileRank.is_in_file_rank_number(base_file_as_slash, base_rank_as_slash)) {
+    while (
+      FileRank.is_in_file_rank_number(base_file_as_slash, base_rank_as_slash)
+    ) {
       if (base_file_as_slash != current_file) {
-        square_position_list.push(new SquarePosition(base_file_as_slash as FileRankNumber, base_rank_as_slash as FileRankNumber));
+        square_position_list.push(
+          new SquarePosition(
+            base_file_as_slash as FileRankNumber,
+            base_rank_as_slash as FileRankNumber
+          )
+        );
       }
       base_file_as_slash += 1;
       base_rank_as_slash += 1;
     }
     // 右下から左上への移動範囲
-    let base_file_as_back_slash = current_file - Math.min(current_file - 1, 9 - current_rank);
-    let base_rank_as_back_slash = current_rank + Math.min(current_file - 1, 9 - current_rank);
+    let base_file_as_back_slash =
+      current_file - Math.min(current_file - 1, 9 - current_rank);
+    let base_rank_as_back_slash =
+      current_rank + Math.min(current_file - 1, 9 - current_rank);
     if (base_file_as_back_slash != current_file) {
-      square_position_list.push(new SquarePosition(base_file_as_back_slash as FileRankNumber, base_rank_as_back_slash as FileRankNumber));
+      square_position_list.push(
+        new SquarePosition(
+          base_file_as_back_slash as FileRankNumber,
+          base_rank_as_back_slash as FileRankNumber
+        )
+      );
     }
     base_file_as_back_slash += 1;
     base_rank_as_back_slash -= 1;
-    while (FileRank.is_in_file_rank_number(base_file_as_back_slash, base_rank_as_back_slash)) {
+    while (
+      FileRank.is_in_file_rank_number(
+        base_file_as_back_slash,
+        base_rank_as_back_slash
+      )
+    ) {
       if (base_file_as_back_slash != current_file) {
-        square_position_list.push(new SquarePosition(base_file_as_back_slash as FileRankNumber, base_rank_as_back_slash as FileRankNumber));
+        square_position_list.push(
+          new SquarePosition(
+            base_file_as_back_slash as FileRankNumber,
+            base_rank_as_back_slash as FileRankNumber
+          )
+        );
       }
       base_file_as_back_slash += 1;
       base_rank_as_back_slash -= 1;
@@ -176,39 +225,43 @@ export class PlainPieceMove {
     return square_position_list;
   }
 
-  private _getSquarePotisionForLance(current_position: SquarePosition, piece_master: PlayerType): SquarePosition[] {
+  private _getSquarePotisionForLance(
+    current_position: SquarePosition,
+    piece_master: PlayerType
+  ): SquarePosition[] {
     const square_position_list: SquarePosition[] = [];
     const current_file = current_position.file;
     const current_rank = current_position.rank;
-    FileRank.numbers.map( (rank) => {
+    FileRank.numbers.map((rank) => {
       square_position_list.push(new SquarePosition(current_file, rank));
     });
 
-    return piece_master == Player.Sente ?
-      square_position_list.slice(0, current_rank - 1) :
-      square_position_list.slice(current_rank) ;
-
+    return piece_master == Player.Sente
+      ? square_position_list.slice(0, current_rank - 1)
+      : square_position_list.slice(current_rank);
   }
 
-  private _getSquarePotisionForkNight(current_position: SquarePosition, piece_master: PlayerType): SquarePosition[] {
+  private _getSquarePotisionForkNight(
+    current_position: SquarePosition,
+    piece_master: PlayerType
+  ): SquarePosition[] {
     const square_position_list: SquarePosition[] = [];
     const current_file = current_position.file;
     const current_rank = current_position.rank;
-    const target_file_pair = [
-      current_file - 1,
-      current_file + 1
-    ];
-    const target_rank = piece_master == Player.Sente ?
-      current_rank - 2 :
-      current_rank + 2;
-    target_file_pair.map( (target_file) => {
+    const target_file_pair = [current_file - 1, current_file + 1];
+    const target_rank =
+      piece_master == Player.Sente ? current_rank - 2 : current_rank + 2;
+    target_file_pair.map((target_file) => {
       if (FileRank.is_in_file_rank_number(target_file, target_rank)) {
-        square_position_list.push(new SquarePosition(target_file as FileRankNumber, target_rank as FileRankNumber));
+        square_position_list.push(
+          new SquarePosition(
+            target_file as FileRankNumber,
+            target_rank as FileRankNumber
+          )
+        );
       }
     });
 
     return square_position_list;
-
   }
-
 }

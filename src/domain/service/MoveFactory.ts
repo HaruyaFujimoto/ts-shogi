@@ -23,5 +23,4 @@ export class MoveFactory {
     // new PieceStand(diagram.turn, []);
     return new Move(from, to, option.promotion);
   }
-
 }

@@ -47,7 +47,7 @@ export class SquareInStandDrawer {
     this.update_square_graphic();
   }
 
-  public register_click_event(func: ()=>any) {
+  public register_click_event(func: () => any) {
     const sprite = this._sprite;
     sprite.on("click", func);
   }
@@ -110,5 +110,4 @@ export class SquareInStandDrawer {
     container.addChild(graphic);
     return graphic;
   }
-
 }

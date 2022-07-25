@@ -16,8 +16,8 @@ export class UIDiagram {
     private _ui_shogi_board: UIShogiBoard,
     private _ui_piece_stands: UIPieceStands,
     // UIShogiBoad はクラスではないので、UIDiagram で ShogiBoardDrawer を持つ
-    private _shogi_board_drawer: ShogiBoardDrawer,
-    ) {
+    private _shogi_board_drawer: ShogiBoardDrawer
+  ) {
     this.update();
   }
 

@@ -1,4 +1,7 @@
-import { MoveFactory, MoveOptionAsPair } from "../../domain/service/MoveFactory";
+import {
+  MoveFactory,
+  MoveOptionAsPair,
+} from "../../domain/service/MoveFactory";
 // import { SquarePosition } from "../../domain/value/SquarePosition";
 import { UIDiagram } from "../model/UIDiagram";
 import { IUISquare, UISquare } from "../model/UISquare";
