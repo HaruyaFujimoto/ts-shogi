@@ -70,7 +70,7 @@ export class UISquareInStand implements IUISquare {
     this._update_drawer();
   }
 
-  private _register_click_event(func: () => any) {
+  private _register_click_event<T>(func: () => T) {
     this._drawer.register_click_event(func);
   }
 

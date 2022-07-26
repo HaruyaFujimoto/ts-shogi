@@ -8,6 +8,7 @@ export class SquareInStandDrawer {
   private _container: PIXI.Container;
 
   private _piece_drawer: PieceDrawer;
+  private _number_sprite: PIXI.Text;
 
   private _sprite: PIXI.Sprite;
   private _graphic: PIXI.Graphics;
@@ -19,49 +20,20 @@ export class SquareInStandDrawer {
     width: number,
     height: number
   ) {
-    // this._ui_square_in_stand = new UISquareInStand(
-    //   this._ui_piece_stand,
-    //   piece_type
-    // );
     this._container = create_pixi_container(x, y, width, height);
     this._sprite = this._add_sprite_into_container(
       this._container,
       width,
       height
     );
-    // this._graphic = this._add_graphic_into_container(this._container, width, height);
     this._graphic = this._add_graphic_into_container(this._container);
     this.update_square_graphic();
     //
     this._piece_drawer = this._create_piece_drawer(this._container);
-    this.update_piece_drawer();
-  }
-
-  public update() {
-    this.update_square_graphic();
-    this.update_piece_drawer();
-  }
-
-  public unfocus() {
-    this._ui_square_in_stand.unselect();
-    this.update_square_graphic();
-  }
-
-  public register_click_event(func: () => any) {
-    const sprite = this._sprite;
-    sprite.on("click", func);
-  }
-
-  private _create_piece_drawer(container: PIXI.Container) {
-    return new PieceDrawer(container, null);
-  }
-
-  public update_piece_drawer() {
-    if (this._ui_square_in_stand.number > 0) {
-      this._piece_drawer.update(this._ui_square_in_stand.piece);
-      return;
-    }
-    this._piece_drawer.update(null);
+    this._number_sprite = this._add_number_sprite_into_container(
+      this._container,
+      this._ui_square_in_stand.number
+    );
   }
 
   private get _color() {
@@ -71,12 +43,47 @@ export class SquareInStandDrawer {
     return ShogiBoardDrawer.square_color.normal;
   }
 
+  public update() {
+    console.log("sis update");
+    this.update_square_graphic();
+    this._update_piece_drawer();
+    this._update_piece_number(this._ui_square_in_stand.number);
+  }
+
   public update_square_graphic() {
     const color = this._color;
     this._graphic
       .beginFill(color)
       .drawRect(0, 0, this._sprite.width, this._sprite.height)
       .endFill();
+  }
+
+  // public unfocus() {
+  //   this._ui_square_in_stand.unselect();
+  //   this.update_square_graphic();
+  // }
+
+  public register_click_event<T>(func: () => T) {
+    const sprite = this._sprite;
+    sprite.on("click", func);
+  }
+
+  private _create_piece_drawer(container: PIXI.Container) {
+    return new PieceDrawer(container, null);
+  }
+
+  private _update_piece_drawer() {
+    if (this._ui_square_in_stand.number > 0) {
+      this._piece_drawer.update(this._ui_square_in_stand.piece);
+      return;
+    }
+    this._piece_drawer.update(null);
+  }
+
+  private _update_piece_number(n: number) {
+    this._number_sprite.text = n > 0 ? n : "";
+    console.log(this._number_sprite.text);
+    this._number_sprite.updateText(false);
   }
 
   private _add_sprite_into_container(
@@ -109,5 +116,23 @@ export class SquareInStandDrawer {
     //   .endFill();
     container.addChild(graphic);
     return graphic;
+  }
+
+  private _add_number_sprite_into_container(
+    container: PIXI.Container,
+    n: number
+  ): PIXI.Text {
+    const text = new PIXI.Text(n > 0 ? n + "" : "");
+    // console.log(container.x, container.y)
+    // text.x = container.x;
+    // text.y = container.y;
+    // text.width = 8;
+    // text.height = 8;
+    container.addChild(text);
+    // text.x = container.x;
+    // text.y = container.y;
+    text.width = 8;
+    text.height = 10;
+    return text;
   }
 }

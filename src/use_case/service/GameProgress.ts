@@ -3,7 +3,7 @@ import { Kifu } from "../../domain/model/Kifu";
 import { DiagramFactory } from "../../domain/service/DiagramFactory";
 import { Move } from "../../domain/value/Move";
 import { MoveFactory } from "../../domain/service/MoveFactory";
-import { Player, PlayerType } from "../../domain/value/Player";
+import { PlayerType } from "../../domain/value/Player";
 import { FileRankPair } from "../../domain/value/FileRankNumber";
 // import { Rule } from "./Rule";
 
@@ -23,8 +23,8 @@ export class GameProgress {
     // const from: Square = this._diagram.shogi_board[7][7];
     // const to: Square = this._diagram.shogi_board[7][6];
     // const move = new Move(from, to, false);
-    console.dir(this._diagram.piece_stands.get(Player.Sente)?.pieces);
-    console.dir(this._diagram.piece_stands.get(Player.Gote)?.pieces);
+    // console.dir(this._diagram.piece_stands.get(Player.Sente)?.pieces);
+    // console.dir(this._diagram.piece_stands.get(Player.Gote)?.pieces);
   }
 
   get diagram(): Diagram {

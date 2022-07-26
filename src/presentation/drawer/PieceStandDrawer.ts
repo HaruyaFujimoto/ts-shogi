@@ -10,13 +10,15 @@ export class PieceStandDrawer {
     ShogiBoardDrawer.shogi_board_color;
 
   private _container: PIXI.Container;
-  private _sprite: PIXI.Sprite;
-  private _graphic: PIXI.Graphics;
+  // private _sprite: PIXI.Sprite;
+  // private _graphic: PIXI.Graphics;
   constructor(x: number, y: number, width: number, height: number) {
     // stand
     this._container = create_pixi_container(x, y, width, height);
-    this._sprite = this._add_sprite(this._container, width, height);
-    this._graphic = this._add_graphic(this._container, width, height);
+    // this._sprite =
+    this._add_sprite(this._container, width, height);
+    // this._graphic =
+    this._add_graphic(this._container, width, height);
   }
 
   get x(): number {

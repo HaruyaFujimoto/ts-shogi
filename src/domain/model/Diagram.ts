@@ -63,7 +63,6 @@ export class Diagram {
       to,
       move.piece
     );
-    console.dir(target_position_piece);
     // 移動先に駒が居たら場合
     if (target_position_piece) {
       const player: PlayerType = move.piece.master;

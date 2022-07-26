@@ -38,16 +38,6 @@ export class SquareDrawer {
     );
   }
 
-  public update() {
-    this._piece_drawer.update(this._ui_square.value.piece);
-    this.update_square_graphic();
-  }
-
-  public register_click_event(func: () => any) {
-    const sprite = this._sprite;
-    sprite.on("click", func);
-  }
-
   private get _color() {
     if (this._ui_square.is_selected) {
       return ShogiBoardDrawer.square_color.selected;
@@ -58,8 +48,9 @@ export class SquareDrawer {
     return ShogiBoardDrawer.square_color.normal;
   }
 
-  private _create_piece_drawer(piece: Piece | null, container: PIXI.Container) {
-    return new PieceDrawer(container, piece);
+  public update() {
+    this._piece_drawer.update(this._ui_square.value.piece);
+    this.update_square_graphic();
   }
 
   public update_square_graphic() {
@@ -69,6 +60,15 @@ export class SquareDrawer {
       .beginFill(color)
       .drawRect(0, 0, this._sprite.width, this._sprite.height)
       .endFill();
+  }
+
+  public register_click_event<T>(func: () => T) {
+    const sprite = this._sprite;
+    sprite.on("click", func);
+  }
+
+  private _create_piece_drawer(piece: Piece | null, container: PIXI.Container) {
+    return new PieceDrawer(container, piece);
   }
 
   private _add_sprite_into_container(
@@ -102,23 +102,4 @@ export class SquareDrawer {
     container.addChild(graphic);
     return graphic;
   }
-
-  // private _attatch_click_event(sprite: PIXI.Sprite) {
-  //   sprite.on("click", () => {
-  //     // console.log(this.sprite.position);
-  //     const skip_condition = this._ui_square.is_selected;
-  //     if (skip_condition) {
-  //       return;
-  //     }
-  //     ClickEventController.instance.click_square(this._ui_square);
-  //     // this.square_status = "selected";
-  //     // this.update_square_graphic();
-  //     // const last_selected = SquareDrawer.last_selected_instance;
-  //     // if (last_selected) {
-  //     //   last_selected.square_status = "normal";
-  //     //   last_selected.update_square_graphic();
-  //     // }
-  //     // SquareDrawer.last_selected_instance = this;
-  //   });
-  // }
 }

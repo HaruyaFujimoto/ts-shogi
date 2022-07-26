@@ -59,7 +59,7 @@ export class UISquare implements IUISquare {
     this._update_drawer();
   }
 
-  private _register_click_event(func: () => any) {
+  private _register_click_event<T>(func: () => T) {
     this._drawer.register_click_event(func);
   }
 
@@ -72,7 +72,6 @@ export class UISquare implements IUISquare {
       this._value.piece &&
       GameController.game.turn == this._value.piece.master
     ) {
-      console.log("work");
       this._is_selected = true;
       this._drawer.update_square_graphic();
       return true;

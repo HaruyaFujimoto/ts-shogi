@@ -54,6 +54,9 @@ export class ClickEventController {
       selected_ui_square.unselect();
       selected_ui_square.update();
       target_square.update();
+      this._ui_diagram.ui_piece_stands.forEach((ui_piece_stand) => {
+        ui_piece_stand.update();
+      });
       // ClickEventController._selected_square_drawer = null;
     } else {
       this._ui_diagram.focus_any_square(target_square);
