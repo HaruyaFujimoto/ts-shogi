@@ -1,7 +1,7 @@
 import { PieceType } from "../../../value/Piece";
 import { PlayerType } from "../../../value/Player";
 import { SquarePosition } from "../../../value/SquarePosition";
-import { PlainPieceMove } from "../../PlainPieceMove";
+import { PlainPieceMove } from "../../PieceMove/PlainPieceMove";
 
 export function move_area_test(
   piece_type: PieceType,

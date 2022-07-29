@@ -85,8 +85,10 @@ export class UISquare implements IUISquare {
   }
 
   public set_as_last_move_to() {
-    if (UISquare._last_move_to_square) {
-      UISquare._last_move_to_square._is_last_move_to = false;
+    const last_move_to_square = UISquare._last_move_to_square;
+    if (last_move_to_square) {
+      last_move_to_square._is_last_move_to = false;
+      last_move_to_square.update();
     }
     this._is_last_move_to = true;
     UISquare._last_move_to_square = this;

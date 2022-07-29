@@ -5,6 +5,7 @@ import { ShogiBoardDrawer } from "../drawer/ShogiBoardDrawer";
 import { UIPieceStands } from "./UIPieceStand";
 import { UIShogiBoard } from "./UIShogiBoard";
 import { IUISquare, UISquare } from "./UISquare";
+import { PlayerType } from "../../domain/value/Player";
 
 // UIDiagramFactory から生成して使用する
 export class UIDiagram {
@@ -59,6 +60,19 @@ export class UIDiagram {
     this._update_model();
     this._update_drawer();
     this._update_child_model();
+  }
+
+  public update_by_add_move(
+    target_square: UISquare,
+    last_move_player?: PlayerType
+  ) {
+    this._set_last_move_to();
+    this._selected_ui_square?.unselect();
+    this._selected_ui_square?.update();
+    target_square.update();
+    if (last_move_player) {
+      this._ui_piece_stands.get(last_move_player)?.update();
+    }
   }
 
   private _update_model() {}

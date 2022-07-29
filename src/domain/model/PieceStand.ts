@@ -18,12 +18,12 @@ export class PieceStand {
     return piece_map;
   }
 
-  public get_piece(piece_type: PieceType): Piece {
+  public get_piece(piece_type: PieceType): Piece | null {
     const piece_index = this._pieces.findIndex((piece) => {
       return piece.type == piece_type;
     });
     if (piece_index < 0) {
-      throw Error(`Piece stand has no ${piece_type}.`);
+      null;
     }
     return this._pieces[piece_index];
   }

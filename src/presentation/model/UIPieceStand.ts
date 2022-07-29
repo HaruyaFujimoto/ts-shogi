@@ -1,5 +1,5 @@
 import { PieceStand } from "../../domain/model/PieceStand";
-import { Piece, PieceType } from "../../domain/value/Piece";
+import { PieceType } from "../../domain/value/Piece";
 import { Player, PlayerType } from "../../domain/value/Player";
 import { PieceStandDrawer } from "../drawer/PieceStandDrawer";
 import { ShogiBoardDrawer } from "../drawer/ShogiBoardDrawer";
@@ -26,15 +26,6 @@ export class UIPieceStand {
       this._drawer.y,
       square_size
     );
-
-    // for test
-    this.value.take_piece(new Piece("Pawn", this.value.master));
-    this.value.take_piece(new Piece("Lance", this.value.master));
-    this.value.take_piece(new Piece("kNight", this.value.master));
-    this.value.take_piece(new Piece("Silver", this.value.master));
-    this.value.take_piece(new Piece("Gold", this.value.master));
-    this.value.take_piece(new Piece("Bishop", this.value.master));
-    this.value.take_piece(new Piece("Rook", this.value.master));
     this.update();
   }
 

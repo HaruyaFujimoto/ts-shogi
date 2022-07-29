@@ -71,6 +71,18 @@ export class PieceDrawer {
     }
   }
 
+  public hide() {
+    if (this._sprite) {
+      this._sprite.visible = false;
+    }
+  }
+
+  public show() {
+    if (this._sprite) {
+      this._sprite.visible = true;
+    }
+  }
+
   public put_piece(piece: Piece) {
     this.remove_piece();
     const file_name = PieceDrawer.piece_asset_map[piece.type];
@@ -82,6 +94,7 @@ export class PieceDrawer {
     // const ratio = 36 / 240;
     // sprite.scale.x = ratio;
     // sprite.scale.y = ratio;
+    // 先後の駒の向きに対応
     this._rotate_piece_sprite(piece.master, sprite, this._container);
     this._container.addChild(sprite);
     this._sprite = sprite;
@@ -92,6 +105,7 @@ export class PieceDrawer {
     if (this._sprite) {
       this._container.removeChild(this._sprite);
     }
+    this._last_update_piece = null;
   }
 
   private _rotate_piece_sprite(

@@ -5,6 +5,7 @@ import { Move } from "../../domain/value/Move";
 import { MoveFactory } from "../../domain/service/MoveFactory";
 import { PlayerType } from "../../domain/value/Player";
 import { FileRankPair } from "../../domain/value/FileRankNumber";
+// import { Piece } from "../../domain/value/Piece";
 // import { Rule } from "./Rule";
 
 export class GameProgress {
@@ -16,9 +17,22 @@ export class GameProgress {
     this._diagram = DiagramFactory.factory();
     // create Players and Turn
     this._kifu = new Kifu(this._diagram);
+
+    // for test
     this._add_move_as_pair([7, 7], [7, 6]);
     this._add_move_as_pair([3, 3], [3, 4]);
     this._add_move_as_pair([8, 8], [2, 2]);
+    // for test
+    // const ui_piece_stands = this._diagram.piece_stands;
+    // ui_piece_stands.forEach( (ui_piece_stand) => {
+    //   ui_piece_stand.take_piece(new Piece("Pawn", ui_piece_stand.master));
+    //   ui_piece_stand.take_piece(new Piece("Lance", ui_piece_stand.master));
+    //   ui_piece_stand.take_piece(new Piece("kNight", ui_piece_stand.master));
+    //   ui_piece_stand.take_piece(new Piece("Silver", ui_piece_stand.master));
+    //   ui_piece_stand.take_piece(new Piece("Gold", ui_piece_stand.master));
+    //   ui_piece_stand.take_piece(new Piece("Bishop", ui_piece_stand.master));
+    //   ui_piece_stand.take_piece(new Piece("Rook", ui_piece_stand.master));
+    // });
     // this.add_move([3, 1], [2, 2]);
     // const from: Square = this._diagram.shogi_board[7][7];
     // const to: Square = this._diagram.shogi_board[7][6];

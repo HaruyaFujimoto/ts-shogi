@@ -21,6 +21,7 @@ export class SquareInStandDrawer {
     height: number
   ) {
     this._container = create_pixi_container(x, y, width, height);
+    this._container.sortableChildren = true;
     this._sprite = this._add_sprite_into_container(
       this._container,
       width,
@@ -44,7 +45,6 @@ export class SquareInStandDrawer {
   }
 
   public update() {
-    console.log("sis update");
     this.update_square_graphic();
     this._update_piece_drawer();
     this._update_piece_number(this._ui_square_in_stand.number);
@@ -82,8 +82,7 @@ export class SquareInStandDrawer {
 
   private _update_piece_number(n: number) {
     this._number_sprite.text = n > 0 ? n : "";
-    console.log(this._number_sprite.text);
-    this._number_sprite.updateText(false);
+    // this._number_sprite.updateText(false);
   }
 
   private _add_sprite_into_container(
@@ -122,17 +121,25 @@ export class SquareInStandDrawer {
     container: PIXI.Container,
     n: number
   ): PIXI.Text {
-    const text = new PIXI.Text(n > 0 ? n + "" : "");
+    const text = new PIXI.Text(n > 0 ? n + "" : "", {
+      fontFamily: "Arial",
+      fontSize: 14,
+      // fill : 0xff1010,
+      align: "center",
+    });
     // console.log(container.x, container.y)
     // text.x = container.x;
     // text.y = container.y;
     // text.width = 8;
     // text.height = 8;
     container.addChild(text);
-    // text.x = container.x;
+    text.x = container.width - 10;
+    text.y = container.height - 20;
+    console.log(text.zIndex);
+    text.zIndex = 3;
     // text.y = container.y;
-    text.width = 8;
-    text.height = 10;
+    // text.width = 10;
+    // text.height = 16;
     return text;
   }
 }

@@ -27,7 +27,7 @@ export class UISquareInStand implements IUISquare {
     return this._ui_piece_stand;
   }
 
-  get piece(): Piece {
+  get piece(): Piece | null {
     return this._ui_piece_stand.value.get_piece(this._piece_type);
   }
 
@@ -52,7 +52,7 @@ export class UISquareInStand implements IUISquare {
   }
 
   public select() {
-    if (this.has_piece && GameController.game.turn == this.piece.master) {
+    if (this.has_piece && GameController.game.turn == this.piece?.master) {
       this._is_selected = true;
       this._drawer.update_square_graphic();
       return true;
@@ -74,7 +74,9 @@ export class UISquareInStand implements IUISquare {
     this._drawer.register_click_event(func);
   }
 
-  private _update_model() {}
+  private _update_model() {
+    // this._ui_piece_stand.update();
+  }
 
   private _update_drawer() {
     this._drawer.update();
