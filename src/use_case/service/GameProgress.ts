@@ -19,9 +19,9 @@ export class GameProgress {
     this._kifu = new Kifu(this._diagram);
 
     // for test
-    this._add_move_as_pair([7, 7], [7, 6]);
-    this._add_move_as_pair([3, 3], [3, 4]);
-    this._add_move_as_pair([8, 8], [2, 2]);
+    // this._add_move_as_pair([7, 7], [7, 6]);
+    // this._add_move_as_pair([3, 3], [3, 4]);
+    // this._add_move_as_pair([8, 8], [2, 2]);
     // for test
     // const ui_piece_stands = this._diagram.piece_stands;
     // ui_piece_stands.forEach( (ui_piece_stand) => {
@@ -70,6 +70,5 @@ export class GameProgress {
   public add_move(move: Move) {
     this._kifu.add_move(move);
     this._diagram.moved(move);
-    console.log(this._diagram.turn);
   }
 }

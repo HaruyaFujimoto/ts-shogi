@@ -31,11 +31,8 @@ export class PieceMoveAreaFactory {
     );
   }
 
-  static factory(
-    piece_type: PieceType
-  ): IPieceMoveArea {
-    const piece_move_area: IPieceMoveArea =
-      this._make_class(piece_type);
+  static factory(piece_type: PieceType): IPieceMoveArea {
+    const piece_move_area: IPieceMoveArea = this._make_class(piece_type);
     return piece_move_area;
   }
 }

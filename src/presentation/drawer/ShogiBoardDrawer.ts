@@ -7,6 +7,8 @@ export class ShogiBoardDrawer {
     normal: ShogiBoardDrawer.shogi_board_color,
     selected: 0xff4b4b,
     last_move_to: 0xe68080,
+    can_move_area: 0xff4b4b,
+    // can_move_area: 0xd1595a,
   };
   static readonly square_size: number = 40;
   static readonly board_stand_gap: number = 10;

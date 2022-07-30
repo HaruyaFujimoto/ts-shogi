@@ -41,6 +41,7 @@ export class Piece {
   //   "Pawn",
   // ];
 
+  // object like { "King": false, "Pawn": true, ... }
   static readonly PromotableMap: { [key: string]: boolean } =
     Object.fromEntries(
       PieceTypes.map((type) =>

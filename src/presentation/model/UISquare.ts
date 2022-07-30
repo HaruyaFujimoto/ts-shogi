@@ -16,6 +16,7 @@ export class UISquare implements IUISquare {
   private static _last_move_to_square: UISquare | null;
   private _is_selected: boolean = false;
   private _is_last_move_to: boolean = false;
+  public is_can_move_area = false;
 
   private _drawer: SquareDrawer;
   constructor(

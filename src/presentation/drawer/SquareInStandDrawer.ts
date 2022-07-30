@@ -135,7 +135,6 @@ export class SquareInStandDrawer {
     container.addChild(text);
     text.x = container.width - 10;
     text.y = container.height - 20;
-    console.log(text.zIndex);
     text.zIndex = 3;
     // text.y = container.y;
     // text.width = 10;

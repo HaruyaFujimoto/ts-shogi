@@ -32,10 +32,20 @@ export class kNightMoveArea implements IPieceMoveArea {
 
   public get_square_positions_as_on_diagram(
     current_position: SquarePosition,
-    diagram: Diagram,
+    diagram: Diagram
   ): SquarePosition[] {
-    const master = PieceMoveOnDiagram.get_piece_master_by_current_position_and_diagram(current_position, diagram);
-    const square_position_list = this.get_square_positions_as_plain(current_position, master);
-    return PieceMoveOnDiagram.filter_in_in_where_can_move_on_diagram_for_one_square_piece(square_position_list, diagram);
+    const master =
+      PieceMoveOnDiagram.get_piece_master_by_current_position_and_diagram(
+        current_position,
+        diagram
+      );
+    const square_position_list = this.get_square_positions_as_plain(
+      current_position,
+      master
+    );
+    return PieceMoveOnDiagram.filter_in_in_where_can_move_on_diagram_for_one_square_piece(
+      square_position_list,
+      diagram
+    );
   }
 }

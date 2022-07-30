@@ -5,7 +5,6 @@ import { UIDiagram } from "../model/UIDiagram";
 import { IUISquare, UISquare } from "../model/UISquare";
 import { UISquareInStand } from "../model/UISquareInStand";
 import { Piece } from "../../domain/value/Piece";
-import { PieceMoveAreaServer } from "../../domain/service/PieceMoveAreaServer";
 
 export class UIEvent {
   static click_square(target_square: IUISquare) {
@@ -76,12 +75,9 @@ export class UIEvent {
     target_square: UISquare,
     ui_diagram: UIDiagram
   ) {
-    // 着手の前に手番の指し手を取得しておく
-    const last_move_player = ui_diagram.value.turn;
     // 着手の正当性チェック
     // ここに移動先として正しいかを判定するロジック
-    const is_good_for_move_to =  PieceMoveAreaServer.is_target_square_in_move_area(selected_ui_square.value, target_square.value, ui_diagram.value);
-    if (! is_good_for_move_to) {
+    if (!target_square.is_can_move_area) {
       ui_diagram.focus_any_square(target_square);
       return;
     }
@@ -104,7 +100,7 @@ export class UIEvent {
     // DrawerController.instance.update();
     // this._ui_diagram.unfocus_any_square();
     // 描画の更新
-    ui_diagram.update_by_add_move(target_square, last_move_player);
+    ui_diagram.update_by_add_move();
   }
 
   private static _move_from_ui_square_in_stand(
@@ -127,7 +123,7 @@ export class UIEvent {
     // DrawerController.instance.update();
     // this._ui_diagram.unfocus_any_square();
     // 描画の更新
-    ui_diagram.update_by_add_move(target_square);
+    ui_diagram.update_by_add_move();
     // ui_diagram.ui_piece_stands.get(player)?.update();
   }
 }

@@ -91,11 +91,17 @@ export class OneSquareMoveArea implements IPieceMoveArea {
 
   public get_square_positions_as_on_diagram(
     current_position: SquarePosition,
-    diagram: Diagram,
+    diagram: Diagram
   ): SquarePosition[] {
-    const {file, rank} = current_position;
+    const { file, rank } = current_position;
     const master = (diagram.shogi_board[file][rank].piece as Piece).master;
-    const square_position_list = this.get_square_positions_as_plain(current_position, master);
-    return PieceMoveOnDiagram.filter_in_in_where_can_move_on_diagram_for_one_square_piece(square_position_list, diagram);
+    const square_position_list = this.get_square_positions_as_plain(
+      current_position,
+      master
+    );
+    return PieceMoveOnDiagram.filter_in_in_where_can_move_on_diagram_for_one_square_piece(
+      square_position_list,
+      diagram
+    );
   }
 }

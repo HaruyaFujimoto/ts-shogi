@@ -5,7 +5,7 @@ import { ShogiBoardDrawer } from "../drawer/ShogiBoardDrawer";
 import { UIPieceStands } from "./UIPieceStand";
 import { UIShogiBoard } from "./UIShogiBoard";
 import { IUISquare, UISquare } from "./UISquare";
-import { PlayerType } from "../../domain/value/Player";
+import { PieceMoveAreaServer } from "../../domain/service/PieceMoveAreaServer";
 
 // UIDiagramFactory から生成して使用する
 export class UIDiagram {
@@ -49,11 +49,30 @@ export class UIDiagram {
     this._selected_ui_square?.unselect();
     ui_square.select();
     this._selected_ui_square = ui_square;
+    // 着手可能なマスを強調表示する
+    this._clear_move_area();
+    if (
+      ui_square instanceof UISquare &&
+      ui_square.value.piece?.master == this._diagram.turn
+    ) {
+      const move_area_square_list = PieceMoveAreaServer.get_move_area(
+        ui_square.value,
+        this._diagram
+      );
+      move_area_square_list.map((square_position) => {
+        const { file, rank } = square_position;
+        // console.log(file, rank);c
+        this._ui_shogi_board[file][rank].is_can_move_area = true;
+      });
+    }
+    this._update_child_model();
   }
 
   public unfocus_any_square() {
     this._selected_ui_square?.unselect();
     this._selected_ui_square = null;
+    this._clear_move_area();
+    this._update_child_model();
   }
 
   public update() {
@@ -62,23 +81,28 @@ export class UIDiagram {
     this._update_child_model();
   }
 
-  public update_by_add_move(
-    target_square: UISquare,
-    last_move_player?: PlayerType
-  ) {
+  public update_by_add_move() {
     this._set_last_move_to();
-    this._selected_ui_square?.unselect();
-    this._selected_ui_square?.update();
-    target_square.update();
-    if (last_move_player) {
-      this._ui_piece_stands.get(last_move_player)?.update();
-    }
+    this.unfocus_any_square();
+    // target_square.update();
+    // if (last_move_player) {
+    //   this._ui_piece_stands.get(last_move_player)?.update();
+    // }
   }
 
   private _update_model() {}
 
   private _update_drawer() {
+    // 将棋盤の背景 (線を含まない)
     this._shogi_board_drawer.update();
+    // 全てのマス
+    FileRank.map((file, rank) => {
+      this._ui_shogi_board[file][rank].update();
+    });
+    // 駒台
+    this._ui_piece_stands.forEach((ui_piece_stand) => {
+      ui_piece_stand.update();
+    });
   }
 
   private _update_child_model() {
@@ -98,5 +122,11 @@ export class UIDiagram {
       const ui_square: UISquare = this._ui_shogi_board[file][rank];
       ui_square.set_as_last_move_to();
     }
+  }
+
+  private _clear_move_area() {
+    FileRank.map((file, rank) => {
+      this._ui_shogi_board[file][rank].is_can_move_area = false;
+    });
   }
 }

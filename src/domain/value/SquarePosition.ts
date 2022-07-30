@@ -11,7 +11,7 @@ export class SquarePosition {
   }
 
   public equals(square_position: SquarePosition) {
-    const {file, rank} = square_position;
+    const { file, rank } = square_position;
     return file == this.file && rank == this.rank;
   }
 }

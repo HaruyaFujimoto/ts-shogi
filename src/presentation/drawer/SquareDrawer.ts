@@ -42,6 +42,9 @@ export class SquareDrawer {
     if (this._ui_square.is_selected) {
       return ShogiBoardDrawer.square_color.selected;
     }
+    if (this._ui_square.is_can_move_area) {
+      return ShogiBoardDrawer.square_color.can_move_area;
+    }
     if (this._ui_square.is_last_move_to) {
       return ShogiBoardDrawer.square_color.last_move_to;
     }

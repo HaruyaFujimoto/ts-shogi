@@ -31,25 +31,25 @@ test('get PieceMove test as "Bishop"', () => {
   current_position = new SquarePosition(5, 5);
   player_type = Player.Sente;
   expect_pair_list = [
-    [ 4, 4 ],
-    [ 3, 3 ],
-    [ 2, 2 ],
-    [ 1, 1 ],
+    [4, 4],
+    [3, 3],
+    [2, 2],
+    [1, 1],
     //
-    [ 4, 6 ],
-    [ 3, 7 ],
-    [ 2, 8 ],
-    [ 1, 9 ],
+    [4, 6],
+    [3, 7],
+    [2, 8],
+    [1, 9],
     //
-    [ 6, 4 ],
-    [ 7, 3 ],
-    [ 8, 2 ],
-    [ 9, 1 ],
+    [6, 4],
+    [7, 3],
+    [8, 2],
+    [9, 1],
     //
-    [ 6, 6 ],
-    [ 7, 7 ],
-    [ 8, 8 ],
-    [ 9, 9 ]
+    [6, 6],
+    [7, 7],
+    [8, 8],
+    [9, 9],
   ];
   move_area_test(piece_type, player_type, current_position, expect_pair_list);
 
