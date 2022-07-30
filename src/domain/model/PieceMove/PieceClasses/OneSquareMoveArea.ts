@@ -1,18 +1,20 @@
-import { FileRankNumber } from "../../value/FileRankNumber";
-import { PieceType } from "../../value/Piece";
+import { FileRankNumber } from "../../../value/FileRankNumber";
+import { Piece, PieceType } from "../../../value/Piece";
 import {
   OneSquareArea,
   King,
   Gold,
   Silver,
   Pawn,
-} from "../../value/PieceClassMoves";
-import { PlayerType, Player } from "../../value/Player";
-import { SquarePosition } from "../../value/SquarePosition";
-import { FileRank } from "../FileRank";
-import { IPlainPieceMoveArea } from "./PlainPieceMove";
+} from "../../../value/PieceClassMoves";
+import { PlayerType, Player } from "../../../value/Player";
+import { SquarePosition } from "../../../value/SquarePosition";
+import { Diagram } from "../../Diagram";
+import { FileRank } from "../../FileRank";
+import { PieceMoveOnDiagram } from "../PieceMoveOnDiagram";
+import { IPieceMoveArea } from "../PieceMoveAsPlain";
 
-export class OneSquareMoveArea implements IPlainPieceMoveArea {
+export class OneSquareMoveArea implements IPieceMoveArea {
   static readonly OneSquareMoveArea: { [key: string]: OneSquareArea[] } = {
     King,
     Gold,
@@ -85,5 +87,15 @@ export class OneSquareMoveArea implements IPlainPieceMoveArea {
       .filter(remove_square_out_of_shogi_board)
       .map(generate_square_position_from_number);
     return square_position_list;
+  }
+
+  public get_square_positions_as_on_diagram(
+    current_position: SquarePosition,
+    diagram: Diagram,
+  ): SquarePosition[] {
+    const {file, rank} = current_position;
+    const master = (diagram.shogi_board[file][rank].piece as Piece).master;
+    const square_position_list = this.get_square_positions_as_plain(current_position, master);
+    return PieceMoveOnDiagram.filter_in_in_where_can_move_on_diagram_for_one_square_piece(square_position_list, diagram);
   }
 }

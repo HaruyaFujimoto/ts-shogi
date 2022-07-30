@@ -1,7 +1,7 @@
 import { PieceType } from "../../../value/Piece";
 import { PlayerType } from "../../../value/Player";
 import { SquarePosition } from "../../../value/SquarePosition";
-import { PlainPieceMove } from "../../PieceMove/PlainPieceMove";
+import { PieceMoveAsPlain } from "../../PieceMove/PieceMoveAsPlain";
 
 export function move_area_test(
   piece_type: PieceType,
@@ -10,7 +10,7 @@ export function move_area_test(
   expect_pair_list: number[][]
 ) {
   // PieceMove 生成
-  let piece_move = new PlainPieceMove(
+  let piece_move = new PieceMoveAsPlain(
     piece_type,
     current_position,
     piece_master

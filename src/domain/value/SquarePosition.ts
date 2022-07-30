@@ -9,4 +9,9 @@ export class SquarePosition {
   get pair(): FileRankPair {
     return [this.file, this.rank];
   }
+
+  public equals(square_position: SquarePosition) {
+    const {file, rank} = square_position;
+    return file == this.file && rank == this.rank;
+  }
 }

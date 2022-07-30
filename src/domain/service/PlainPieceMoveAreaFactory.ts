@@ -1,15 +1,13 @@
-import { BishopMoveArea } from "../model/PieceMove/BishopMoveArea";
-import { kNightMoveArea } from "../model/PieceMove/kNightMoveArea";
-import { LanceMoveArea } from "../model/PieceMove/LanceMoveArea";
-import { OneSquareMoveArea } from "../model/PieceMove/OneSquareMoveArea";
-import { IPlainPieceMoveArea } from "../model/PieceMove/PlainPieceMove";
-import { RookMoveArea } from "../model/PieceMove/RookMoveArea";
+import { RookMoveArea } from "../model/PieceMove/PieceClasses/RookMoveArea";
+import { BishopMoveArea } from "../model/PieceMove/PieceClasses/BishopMoveArea";
+import { kNightMoveArea } from "../model/PieceMove/PieceClasses/kNightMoveArea";
+import { LanceMoveArea } from "../model/PieceMove/PieceClasses/LanceMoveArea";
+import { OneSquareMoveArea } from "../model/PieceMove/PieceClasses/OneSquareMoveArea";
+import { IPieceMoveArea } from "../model/PieceMove/PieceMoveAsPlain";
 import { PieceType } from "../value/Piece";
-import { PlayerType } from "../value/Player";
-import { SquarePosition } from "../value/SquarePosition";
 
-export class PlainPieceMoveAreaFactory {
-  private static _make_class(piece_type: PieceType): IPlainPieceMoveArea {
+export class PieceMoveAreaFactory {
+  private static _make_class(piece_type: PieceType): IPieceMoveArea {
     const is_one_square_piece = Object.keys(
       OneSquareMoveArea.OneSquareMoveArea
     ).includes(piece_type);
@@ -34,16 +32,10 @@ export class PlainPieceMoveAreaFactory {
   }
 
   static factory(
-    piece_type: PieceType,
-    piece_master: PlayerType,
-    current_position: SquarePosition
-  ) {
-    const plain_piece_move_area: IPlainPieceMoveArea =
+    piece_type: PieceType
+  ): IPieceMoveArea {
+    const piece_move_area: IPieceMoveArea =
       this._make_class(piece_type);
-
-    return plain_piece_move_area.get_square_positions_as_plain(
-      current_position,
-      piece_master
-    );
+    return piece_move_area;
   }
 }

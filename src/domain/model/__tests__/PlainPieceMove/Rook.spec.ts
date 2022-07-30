@@ -15,7 +15,7 @@ test('get PieceMove test as "Rook"', () => {
   let current_position = new SquarePosition(1, 1);
   let player_type = Player.Sente;
   let expect_pair_list = [
-    // [ 1, 1 ],
+    // down
     [1, 2],
     [1, 3],
     [1, 4],
@@ -24,7 +24,7 @@ test('get PieceMove test as "Rook"', () => {
     [1, 7],
     [1, 8],
     [1, 9],
-    // [ 1, 1 ],
+    // left
     [2, 1],
     [3, 1],
     [4, 1],
@@ -40,20 +40,22 @@ test('get PieceMove test as "Rook"', () => {
   current_position = new SquarePosition(5, 5);
   player_type = Player.Sente;
   expect_pair_list = [
-    [5, 1],
-    [5, 2],
-    [5, 3],
+    // up
     [5, 4],
-    // [ 5, 5 ],
+    [5, 3],
+    [5, 2],
+    [5, 1],
+    // right
+    [4, 5],
+    [3, 5],
+    [2, 5],
+    [1, 5],
+    // down
     [5, 6],
     [5, 7],
     [5, 8],
     [5, 9],
-    [1, 5],
-    [2, 5],
-    [3, 5],
-    [4, 5],
-    // [ 5, 5 ],
+    // left
     [6, 5],
     [7, 5],
     [8, 5],

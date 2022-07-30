@@ -5,6 +5,7 @@ import { UIDiagram } from "../model/UIDiagram";
 import { IUISquare, UISquare } from "../model/UISquare";
 import { UISquareInStand } from "../model/UISquareInStand";
 import { Piece } from "../../domain/value/Piece";
+import { PieceMoveAreaServer } from "../../domain/service/PieceMoveAreaServer";
 
 export class UIEvent {
   static click_square(target_square: IUISquare) {
@@ -77,8 +78,13 @@ export class UIEvent {
   ) {
     // 着手の前に手番の指し手を取得しておく
     const last_move_player = ui_diagram.value.turn;
+    // 着手の正当性チェック
     // ここに移動先として正しいかを判定するロジック
-    // 着手を用意
+    const is_good_for_move_to =  PieceMoveAreaServer.is_target_square_in_move_area(selected_ui_square.value, target_square.value, ui_diagram.value);
+    if (! is_good_for_move_to) {
+      ui_diagram.focus_any_square(target_square);
+      return;
+    }
     // const move_option: MoveOptionAsPair = {
     //   from: selected_ui_square.value.position.pair,
     //   to: target_square.value.position.pair,
@@ -88,6 +94,7 @@ export class UIEvent {
     //   GameController.game.diagram,
     //   move_option
     // );
+    // 着手を用意
     const move = MoveFactory.create_move_from_square(
       selected_ui_square.value,
       target_square.value
