@@ -3,7 +3,7 @@ import { PlayerType } from "./Player";
 import { Square } from "./Square";
 
 // for player data
-export type PieceMoveFrom = Square | PieceStand;
+export type PiecePosition = Square | PieceStand;
 
 // define types
 export const PieceTypes = [
@@ -67,6 +67,7 @@ export class Piece {
   constructor(
     public readonly type: PieceType,
     private _master: PlayerType,
+    private _piece_position: PiecePosition,
     public is_promoted: boolean = false
   ) {
     this.type_initial = Piece.PieceInitialMap[this.type];
@@ -83,19 +84,23 @@ export class Piece {
     return this._master;
   }
 
+  get piece_position(): PiecePosition {
+    return this._piece_position;
+  }
+
   public be_taken_by(player_type: PlayerType) {
     this._master = player_type;
   }
 
-  public equals(piece: Piece): boolean {
-    return (
-      this.type == piece.type &&
-      this._master == piece.master &&
-      this.is_promoted == piece.is_promoted
-    );
-  }
+  // public equals(piece: Piece): boolean {
+  //   return (
+  //     this.type == piece.type &&
+  //     this._master == piece.master &&
+  //     this.is_promoted == piece.is_promoted
+  //   );
+  // }
 
-  public replicate(): Piece {
-    return new Piece(this.type, this._master, this.is_promoted);
-  }
+  // public replicate(): Piece {
+  //   return new Piece(this.type, this._master, this.is_promoted);
+  // }
 }

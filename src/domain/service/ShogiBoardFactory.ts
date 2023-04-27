@@ -13,7 +13,7 @@ export class ShogiBoardFactory {
     // create
     FileRank.map((file, rank) => {
       const square_position = new SquarePosition(file, rank);
-      const square = new Square(square_position, null);
+      const square = new Square(square_position);
       shogi_board[file][rank] = square;
     });
     return shogi_board;

@@ -1,12 +1,25 @@
 import { ShogiBoard } from "../value/ShogiBoard";
 import { PieceStand, PieceStands } from "./PieceStand";
 import { Move } from "../value/Move";
-import { Piece, PieceMoveFrom } from "../value/Piece";
+import { Piece, PiecePosition } from "../value/Piece";
 import { Player, PlayerType } from "../value/Player";
 import { Turn } from "../value/Turn";
 import { Square } from "../value/Square";
 import { FileRankPair } from "../value/FileRankNumber";
 import { range } from "../service/utils";
+import { PieceSet } from "./PieceSet";
+
+type MoveFromSquare = {
+  from: Square,
+  to: Square,
+  piece: Piece
+};
+
+type MoveFromPieceInHand = {
+  from: PieceStand,
+  to: Square,
+  piece: Piece
+}
 
 export class Diagram {
   private _piece_stands: PieceStands = new Map([
@@ -16,28 +29,16 @@ export class Diagram {
 
   constructor(
     private _turn: Turn,
-    private _shogi_board: ShogiBoard,
-    piece_in_hands?: PieceStands
+    private _piece_set: PieceSet,
   ) {
-    if (piece_in_hands) {
-      this._piece_stands = piece_in_hands;
-    }
   }
 
-  get shogi_board(): ShogiBoard {
-    return this._shogi_board;
-  }
-
-  get piece_stands(): PieceStands {
-    return this._piece_stands;
+  get piece_set(): PieceSet {
+    return this._piece_set;
   }
 
   get turn(): PlayerType {
     return this._turn.current_turn;
-  }
-
-  public get_square(file_rank: FileRankPair): Square {
-    return this.shogi_board[file_rank[0]][file_rank[1]];
   }
 
   public moved(move: Move) {
@@ -47,16 +48,16 @@ export class Diagram {
       );
     }
     if (move.from instanceof Square) {
-      this._moved_from_square_position(move);
+      this._moved_from_square(move as MoveFromSquare);
     }
     if (move.from instanceof PieceStand) {
-      this._moved_from_piece_in_hand(move);
+      this._moved_from_piece_in_hand(move as MoveFromPieceInHand);
     }
     this._turn.advance();
   }
 
-  private _moved_from_square_position(move: Move) {
-    const from: Square = move.from as Square;
+  private _moved_from_square(move: MoveFromSquare) {
+    const from: Square = move.from;
     const to: Square = move.to;
     const target_position_piece = this._put_piece_into_square_position(
       from,
@@ -74,18 +75,19 @@ export class Diagram {
     }
   }
 
-  private _moved_from_piece_in_hand(move: Move) {
-    const from: PieceStand = move.from as PieceStand;
+  private _moved_from_piece_in_hand(move: MoveFromPieceInHand) {
+    const from: PieceStand = move.from;
     const to: Square = move.to;
     this._put_piece_into_square_position(from, to, move.piece);
   }
 
   private _put_piece_into_square_position(
-    from: PieceMoveFrom,
+    from: PiecePosition,
     to: Square,
     piece: Piece
   ): Piece | null {
     // remove piece in position come from
+    
 
     if (from instanceof Square) {
       from.remove_piece();
