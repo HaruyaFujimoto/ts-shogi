@@ -39,7 +39,7 @@ jobs:
       - name: Install dependency
         run: npm ci
       - name: Build
-        run: npm run build --base /ts-shogi
+        run: npm run build --base=/ts-shogi
       - name: Setup Pages
         uses: actions/configure-pages@v3
       - name: Upload artifact
