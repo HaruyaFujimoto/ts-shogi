@@ -2,9 +2,7 @@ import { Diagram } from "../../domain/model/Diagram";
 import { Kifu } from "../../domain/model/Kifu";
 import { DiagramFactory } from "../../domain/service/DiagramFactory";
 import { Move } from "../../domain/value/Move";
-import { MoveFactory } from "../../domain/service/MoveFactory";
 import { PlayerType } from "../../domain/value/Player";
-import { FileRankPair } from "../../domain/value/FileRankNumber";
 // import { Piece } from "../../domain/value/Piece";
 // import { Rule } from "./Rule";
 
@@ -53,19 +51,19 @@ export class GameProgress {
     return this._diagram.turn;
   }
 
-  private _add_move_as_pair(
-    from: FileRankPair,
-    to: FileRankPair,
-    promotion = false
-  ) {
-    const move: Move = MoveFactory.create_move_from_pair(this._diagram, {
-      from: from,
-      to: to,
-      promotion: promotion,
-    });
-    this._kifu.add_move(move);
-    this._diagram.moved(move);
-  }
+  // private _add_move_as_pair(
+  //   from: FileRankPair,
+  //   to: FileRankPair,
+  //   promotion = false
+  // ) {
+  //   const move: Move = MoveFactory.create_move_from_pair(this._diagram, {
+  //     from: from,
+  //     to: to,
+  //     promotion: promotion,
+  //   });
+  //   this._kifu.add_move(move);
+  //   this._diagram.moved(move);
+  // }
 
   public add_move(move: Move) {
     this._kifu.add_move(move);

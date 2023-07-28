@@ -4,14 +4,14 @@ import { Player, PlayerType } from "../../domain/value/Player";
 
 // import assets
 
-// import KingImage from "assets/syougi_koma01_a_15.png";
-// import GoldImage from "assets/syougi_koma01_a_06.png";
-// import RookImage from "assets/syougi_koma01_a_04.png";
-// import BishopImage from "assets/syougi_koma01_a_02.png";
-// import SilverImage from "assets/syougi_koma01_a_07.png";
-// import kNightImage from "assets/syougi_koma01_a_09.png";
-// import LanceImage from "assets/syougi_koma01_a_11.png";
-// import PawnImage from "assets/syougi_koma01_a_13.png";
+import KingImage from "../../../assets/syougi_koma01_a_15.png";
+import GoldImage from "../../../assets/syougi_koma01_a_06.png";
+import RookImage from "../../../assets/syougi_koma01_a_04.png";
+import BishopImage from "../../../assets/syougi_koma01_a_02.png";
+import SilverImage from "../../../assets/syougi_koma01_a_07.png";
+import kNightImage from "../../../assets/syougi_koma01_a_09.png";
+import LanceImage from "../../../assets/syougi_koma01_a_11.png";
+import PawnImage from "../../../assets/syougi_koma01_a_13.png";
 
 // const fr = (container: PIXI.Container) => {
 //   const x = container.x;
@@ -23,22 +23,22 @@ import { Player, PlayerType } from "../../domain/value/Player";
 
 export class PieceDrawer {
   static readonly piece_asset_map: { [key: string]: string } = {
-    // King: KingImage,
-    // Gold: GoldImage,
-    // Rook: RookImage,
-    // Bishop: BishopImage,
-    // Silver: SilverImage,
-    // kNight: kNightImage,
-    // Lance: LanceImage,
-    // Pawn: PawnImage,
-    King: "assets/syougi_koma01_a_15.png",
-    Gold: "assets/syougi_koma01_a_06.png",
-    Rook: "assets/syougi_koma01_a_04.png",
-    Bishop: "assets/syougi_koma01_a_02.png",
-    Silver: "assets/syougi_koma01_a_07.png",
-    kNight: "assets/syougi_koma01_a_09.png",
-    Lance: "assets/syougi_koma01_a_11.png",
-    Pawn: "assets/syougi_koma01_a_13.png",
+    King: KingImage,
+    Gold: GoldImage,
+    Rook: RookImage,
+    Bishop: BishopImage,
+    Silver: SilverImage,
+    kNight: kNightImage,
+    Lance: LanceImage,
+    Pawn: PawnImage,
+    // King: "assets/syougi_koma01_a_15.png",
+    // Gold: "assets/syougi_koma01_a_06.png",
+    // Rook: "assets/syougi_koma01_a_04.png",
+    // Bishop: "assets/syougi_koma01_a_02.png",
+    // Silver: "assets/syougi_koma01_a_07.png",
+    // kNight: "assets/syougi_koma01_a_09.png",
+    // Lance: "assets/syougi_koma01_a_11.png",
+    // Pawn: "assets/syougi_koma01_a_13.png",
   };
 
   private _last_update_piece: Piece | null = null;
