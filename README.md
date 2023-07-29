@@ -8,7 +8,7 @@
 https://haruyafujimoto.github.io/ts-shogi/
 
 
-## 今後したいこと
+## 今後したいこと、できたらいいな程度に思っていること
 
 - 将棋盤を表示するコードだけをこのリポジトリに残したい
 - 将棋ゲームのロジックに関して[こちら](https://github.com/node-shogi-engine/shogi-board-game-engine)のレポジトリで管理したい
