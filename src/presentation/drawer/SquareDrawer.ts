@@ -67,7 +67,10 @@ export class SquareDrawer {
 
   public register_click_event<T>(func: () => T) {
     const sprite = this._sprite;
-    sprite.on("click", func);
+    const events = ["click", "tap"];
+    events.forEach((event) => {
+      sprite.on(event, func);
+    });
   }
 
   private _create_piece_drawer(piece: Piece | null, container: PIXI.Container) {

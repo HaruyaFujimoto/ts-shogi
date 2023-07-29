@@ -49,8 +49,11 @@ export class ShogiBoardDrawer {
     this._container.addChild(graphics);
     // event
     graphics.interactive = true;
-    graphics.on("click", (e) => {
-      console.dir(e);
+    const events = ["click", "tap"];
+    events.forEach((event) => {
+      graphics.on(event, (e) => {
+        console.dir(e);
+      });
     });
   }
 }

@@ -5,17 +5,63 @@
   <meta charset="UTF-8" />
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Vite App</title>
+  <title>将棋盤 | ts-shogi</title>
+  <!-- reset.css modern-css-reset -->
+  <link rel="stylesheet" href="https://unpkg.com/modern-css-reset/dist/reset.min.css" />
   <style>
-    body>canvas {
-      width: 800px;
-      height: auto;
+    .container {
+      width: fit-content;
+      margin: 10px auto 30px;
     }
+
+    #app {
+      max-width: 800px;
+      min-width: 320px;
+    }
+
+    #app>canvas {
+      max-width: inherit;
+      overflow-clip-margin: unset;
+      overflow: unset;
+    }
+
+    .description {
+      font-size: 24px
+    }
+
+    .description h3 {
+      font-size: 32px;
+      margin: 20px 0 10px;
+    }
+
+    /*
+    .description a {
+      cursor: pointer;
+      color: blue;
+      text-decoration: underline;
+    } */
   </style>
 </head>
 
 <body>
   <script type="module" src="./src/main.ts"></script>
+  <div class="container">
+    <h1>TS 将棋</h1>
+    <div id="app"></div>
+    <div class="description">
+      <h2>未完成の将棋盤です</h2>
+      <ul>
+        <li>二歩ができます</li>
+        <li>王手放置ができます</li>
+        <li>その他、着手不能な手ができてしまいます(桂馬を打つ場所など)</li>
+        <li>ゲームが終わりません</li>
+      </ul>
+      <h2>お借りしている素材</h2>
+      <p>
+        <a href="https://putiya.com/index.html" target="_blank">かわいいフリー素材、無料イラスト、素材のプチッチ</a>
+      </p>
+    </div>
+  </div>
 </body>
 
 </html>

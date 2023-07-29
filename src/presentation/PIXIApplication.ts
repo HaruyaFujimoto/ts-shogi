@@ -1,15 +1,15 @@
 import * as PIXI from "pixi.js";
 
 const canvas_props = {
-  width: 900,
-  height: 900,
+  width: 40 * 11 + 40 * 2 * 2 + 10 * 2,
+  height: 440,
   backgroundColor: 0x999999,
   resolution: window.devicePixelRatio || 1,
   autoResize: true,
 };
 
 export const app = new PIXI.Application({ ...canvas_props });
-document.body.appendChild(app.view);
+document.getElementById("app")?.appendChild(app.view);
 
 export function create_pixi_container(
   x: number,
