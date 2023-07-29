@@ -1,7 +1,7 @@
 import * as PIXI from "pixi.js";
 
 const canvas_props = {
-  width: 40 * 11 + 40 * 2 * 2 + 10 * 2,
+  width: 40 * 11 + 40 * 2 * 2 + 10 * 2, // 620
   height: 440,
   backgroundColor: 0x999999,
   resolution: window.devicePixelRatio || 1,
